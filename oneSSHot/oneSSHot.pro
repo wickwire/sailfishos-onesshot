@@ -14,9 +14,11 @@ SOURCES += src/oneSSHot.cpp
 
 OTHER_FILES += qml/oneSSHot.qml \
     qml/cover/CoverPage.qml \
-    qml/pages/FirstPage.qml \
-    qml/pages/SecondPage.qml \
     rpm/oneSSHot.spec \
     rpm/oneSSHot.yaml \
-    oneSSHot.desktop
+    oneSSHot.desktop \
+    qml/pages/HomeScreen.qml \
+    qml/pages/AddProfile.qml \
+    qml/pages/ManageProfiles.qml \
+    qml/pages/AboutPage.qml
 

@@ -12,8 +12,16 @@ Page {
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
             MenuItem {
-                text: "Show Page 2"
-                onClicked: pageStack.push(Qt.resolvedUrl("SecondPage.qml"))
+                text: "Add New Profile"
+                onClicked: pageStack.push(Qt.resolvedUrl("AddProfile.qml"))
+            }
+            MenuItem {
+                text: "Manage Existing Profile"
+                onClicked: pageStack.push(Qt.resolvedUrl("ManageProfiles.qml"))
+            }
+            MenuItem {
+                text: "About oneSSHot"
+                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
         }
 
@@ -28,11 +36,11 @@ Page {
             width: page.width
             spacing: Theme.paddingLarge
             PageHeader {
-                title: "UI Template"
+                title: "oneSSHot Main Screen"
             }
             Label {
                 x: Theme.paddingLarge
-                text: "Hello Sailors"
+                text: "To hold the profile list"
                 color: Theme.secondaryHighlightColor
                 font.pixelSize: Theme.fontSizeExtraLarge
             }
