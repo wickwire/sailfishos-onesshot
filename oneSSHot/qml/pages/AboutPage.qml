@@ -36,21 +36,26 @@ Page {
     id: page
     SilicaListView {
         id: listView
-        model: 20
+        model: 1
         anchors.fill: parent
         header: PageHeader {
-            title: "Nested Page"
+            title: "About oneSSHot"
         }
         delegate: BackgroundItem {
             id: delegate
-
+            height: about.height
             Label {
-                x: Theme.paddingLarge
-                text: "Item " + index
-                anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                id: about
+                width: parent.width
+                wrapMode: Text.WordWrap
+                text: "
+* oneSSHot works by automating commands over SSH to remote (either LAN or internet accessible) systems. It is then up to the remote system to act accordingly to the received command.\n
+This app came out of the necessity to quickly issue shutdown commands to several systems through out the house.\n\n
+* It can be used to do a lot more than that, since any command can be sent to remote system.\n\n
+* This app was first intended for Android (1.6 at the time) but a few weeks prior to market publishing, I found out that another developer had already submitted a similar app called Lazier Geek.\n\n
+* Since I couldn't find a match in the Jolla Store, I thought I'd resume my old project and improve upon it!\n\n\n
+"
             }
-            onClicked: console.log("Clicked " + index)
         }
         VerticalScrollDecorator {}
     }
