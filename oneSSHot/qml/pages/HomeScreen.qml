@@ -16,11 +16,11 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("AddProfile.qml"))
             }
             MenuItem {
-                text: "Manage Existing Profile"
-                onClicked: pageStack.push(Qt.resolvedUrl("ManageProfiles.qml"))
+                text: "Remove Profiles"
+                onClicked: pageStack.push(Qt.resolvedUrl("RemoveProfiles.qml"))
             }
             MenuItem {
-                text: "About oneSSHot"
+                text: "About"
                 onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
             }
         }
@@ -36,7 +36,7 @@ Page {
             width: page.width
             spacing: Theme.paddingLarge
             PageHeader {
-                title: "oneSSHot Main Screen"
+                title: "Main Screen"
             }
             Label {
                 x: Theme.paddingLarge
