@@ -9,11 +9,12 @@ class sshExecuteCmd : public QObject
     Q_OBJECT
 public:
     explicit sshExecuteCmd(QObject *parent = 0);
+    //QString qmlhost, qmlport, qmluser, qmlcommand;
 
 signals:
 
 public slots:
-    void executeSSH();
+    void executeSSH(QString qmlusername, QString qmlhost, QString qmlport, QString qmlcommand);
 
 };
 
