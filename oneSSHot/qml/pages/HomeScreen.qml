@@ -21,7 +21,7 @@ Page {
                 onClicked: pageStack.push(Qt.resolvedUrl("RemoveProfiles.qml"))
             }
             MenuItem {
-                text: "Clear Profiles DB"
+                text: "Clear DB"
                 onClicked: pageStack.push(Qt.resolvedUrl("DropDB.qml"))
             }
             MenuItem {
@@ -108,8 +108,8 @@ Page {
                     color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
                 onClicked: {
+                    sshCmd.executeSSH()
                     console.log("Clicked " + name)
-
                 }
             }
             VerticalScrollDecorator {}

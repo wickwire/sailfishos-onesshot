@@ -10,7 +10,8 @@ TARGET = oneSSHot
 
 CONFIG += sailfishapp
 
-SOURCES += src/oneSSHot.cpp
+SOURCES += src/oneSSHot.cpp \
+    src/sshexecutecmd.cpp
 
 OTHER_FILES += qml/oneSSHot.qml \
     qml/cover/CoverPage.qml \
@@ -23,4 +24,7 @@ OTHER_FILES += qml/oneSSHot.qml \
     qml/pages/AboutPage.qml \
     qml/pages/RemoveProfiles.qml \
     qml/pages/DropDB.qml
+
+HEADERS += \
+    src/sshexecutecmd.h
 
