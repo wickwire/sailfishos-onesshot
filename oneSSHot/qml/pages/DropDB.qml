@@ -30,33 +30,60 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-
+import QtQuick.LocalStorage 2.0
 
 Page {
     id: page
+
+    property var db: null
+
+    function dropDB() {
+
+        if(db !== null) return;
+
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+                tx.executeSql('DROP TABLE oneSSHot;');
+            }
+        )
+    }
+
+
     SilicaListView {
         id: listView
-        model: 20
+        model: 1
         anchors.fill: parent
         header: PageHeader {
-            title: "Nested Page"
+            title: "Clear DB"
         }
+
         delegate: BackgroundItem {
             id: delegate
+            height: 400
 
-            Label {
-                x: Theme.paddingLarge
-                text: "Item " + index
-                anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+
+            Component.onCompleted: {
+
+                console.log("to be dropped")
+                dropDB()
+                console.log("dropped OK")
             }
-            onClicked: console.log("Clicked " + index)
+
+            Button {
+
+                id: droppedOK
+                width: parent.width
+                text: "DB dropped!"
+                y: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+
+                onClicked: {
+                    pageStack.clear()
+                    pageStack.push("HomeScreen.qml")
+                }
+            }
         }
-        VerticalScrollDecorator {}
     }
 }
-
-
-
-
-

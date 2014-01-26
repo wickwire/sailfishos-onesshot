@@ -39,6 +39,12 @@ Page {
 
     property var db: null
     property var rs: null
+    property string profileName: null
+    property string profileHost: null
+    property string profilePort: null
+    property string profileUsername: null
+    property string profilePassword: null
+    property string profileCommand: null
 
     function saveProfile() {
 
@@ -55,13 +61,18 @@ Page {
                 tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
 
                 // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHot VALUES(?, ?, ?, ?, ?, ?);', ['writeEcho', '192.168.55.104', '22', 'wickwire', 'Sp4rt4kusDun3', 'batata']);
-
+                tx.executeSql('INSERT INTO oneSSHot VALUES(?, ?, ?, ?, ?, ?);', [profileName, profileHost, profilePort, profileUsername, profilePassword, profileCommand]);
 
                 rs = tx.executeSql('SELECT * FROM oneSSHot;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
-                    console.log("name: " + rs.rows.item(i).profileName)
+                    console.log(rs.rows.item(i).profileName
+                                + "|" + rs.rows.item(i).profileHost
+                                + "|" + rs.rows.item(i).profilePort
+                                + "|" + rs.rows.item(i).profileUser
+                                + "|" + rs.rows.item(i).profilePass
+                                + "|" + rs.rows.item(i).profileCommand
+                    )
                 }
 
 
@@ -140,10 +151,14 @@ Page {
                 y: profileCommandField.y+profileCommandField.height
 
                 onClicked: {
+                    profileName=profileNameField.text
+                    profileHost=profileHostField.text
+                    profilePort=profilePortField.text
+                    profileUsername=profileUsernameField.text
+                    profilePassword=profilePasswordField.text
+                    profileCommand=profileCommandField.text
                     saveProfile()
-
                     var dialog = pageStack.push(savedOK)
-
                 }
             }
 
