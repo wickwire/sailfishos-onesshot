@@ -36,21 +36,74 @@ Page {
     id: page
     SilicaListView {
         id: listView
-        model: 20
+        model: 1
         anchors.fill: parent
         header: PageHeader {
-            title: "Nested Page"
+            title: "Add Profile"
         }
         delegate: BackgroundItem {
             id: delegate
+            height: 400
 
-            Label {
-                x: Theme.paddingLarge
-                text: "Item " + index
-                anchors.verticalCenter: parent.verticalCenter
+            TextField {
+                id: profileNameField
+                placeholderText: "Profile Name"
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
             }
-            onClicked: console.log("Clicked " + index)
+
+            TextField {
+                id: profileHostField
+                placeholderText: "Host"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: profileNameField.y+profileNameField.height
+            }
+
+            TextField {
+                id: profilePortField
+                placeholderText: "Port"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: profileHostField.y+profileHostField.height
+            }
+
+            TextField {
+                id: profileUsernameField
+                placeholderText: "Username"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: profilePortField.y+profilePortField.height
+            }
+
+            TextField {
+                id: profilePasswordField
+                placeholderText: "Password"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: profileUsernameField.y+profileUsernameField.height
+                echoMode: TextInput.Password
+            }
+
+            TextField {
+                id: profileCommandField
+                placeholderText: "Command"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: profilePasswordField.y+profilePasswordField.height
+            }
+
+            Button{
+                id: profileSave
+                text: "Save Profile"
+                y: profileCommandField.y+profileCommandField.height
+            }
         }
         VerticalScrollDecorator {}
     }

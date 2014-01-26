@@ -21,5 +21,6 @@ OTHER_FILES += qml/oneSSHot.qml \
     qml/pages/AddProfile.qml \
     qml/pages/ManageProfiles.qml \
     qml/pages/AboutPage.qml \
-    qml/pages/RemoveProfiles.qml
+    qml/pages/RemoveProfiles.qml \
+    qml/pages/DropDB.qml
 
