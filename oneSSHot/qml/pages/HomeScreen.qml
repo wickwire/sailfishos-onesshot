@@ -56,7 +56,8 @@ Page {
                 db.transaction(
                     function(tx) {
 
-                        tx.executeSql('DROP TABLE oneSSHot;');
+                        //debug only: drop table on start up
+                        //tx.executeSql('DROP TABLE oneSSHot;');
 
                         // Create the database if it doesn't already exist
                         tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
@@ -85,7 +86,6 @@ Page {
             Component.onCompleted: {
 
                 listProfiles()
-
             }
 
         }

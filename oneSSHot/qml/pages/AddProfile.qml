@@ -30,10 +30,45 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
+import QtQuick.LocalStorage 2.0
 
 
 Page {
     id: page
+
+
+    property var db: null
+    property var rs: null
+
+    function saveProfile() {
+
+        if(db !== null) return;
+
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+
+                //tx.executeSql('DROP TABLE oneSSHot;');
+
+                // Create the database if it doesn't already exist
+                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
+
+                // Add (another) profile row
+                tx.executeSql('INSERT INTO oneSSHot VALUES(?, ?, ?, ?, ?, ?);', ['writeEcho', '192.168.55.104', '22', 'wickwire', 'Sp4rt4kusDun3', 'batata']);
+
+
+                rs = tx.executeSql('SELECT * FROM oneSSHot;');
+
+                for(var i = 0; i < rs.rows.length; i++) {
+                    console.log("name: " + rs.rows.item(i).profileName)
+                }
+
+
+            }
+        )
+    }
+
     SilicaListView {
         id: listView
         model: 1
@@ -103,6 +138,32 @@ Page {
                 id: profileSave
                 text: "Save Profile"
                 y: profileCommandField.y+profileCommandField.height
+
+                onClicked: {
+                    saveProfile()
+
+                    var dialog = pageStack.push(savedOK)
+
+                }
+            }
+
+
+            Dialog {
+
+                id: savedOK
+
+                Text{
+                    width: parent.width
+                    text: "Profile saved Successfully!"
+                    color: "white"
+                    y: 100
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                onClicked: {
+                    pageStack.clear()
+                    pageStack.push("HomeScreen.qml")
+                }
             }
         }
         VerticalScrollDecorator {}
