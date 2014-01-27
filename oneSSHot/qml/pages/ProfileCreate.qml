@@ -30,53 +30,16 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtQuick.LocalStorage 2.0
-
 
 Page {
     id: page
 
-
-    property var db: null
-    property var rs: null
+    DBFunctions{ id: dbFunction}
 
     property string profileName: null
     property string profileHost: null
     property int profileHostId
-    //property string profilePort: null
-    //property string profileUsername: null
-    //property string profilePassword: null
     property string profileCommand: null
-
-    function saveProfile() {
-
-        if(db !== null) return;
-
-        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
-
-        db.transaction(
-            function(tx) {
-
-                // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHotProfiles VALUES(?, ?, ?, ?);', [profileName, profileHostId, profileHost, profileCommand]);
-
-                rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
-
-                for(var i = 0; i < rs.rows.length; i++) {
-                    console.log(rs.rows.item(i).profileName
-                                + "|" + rs.rows.item(i).profileHostId
-                                + "|" + rs.rows.item(i).profileHost
-                                //+ "|" + rs.rows.item(i).profilePort
-                                //+ "|" + rs.rows.item(i).profileUser
-                                //+ "|" + rs.rows.item(i).profilePass
-                                + "|" + rs.rows.item(i).profileCommand
-                    )
-                }
-
-
-            }
-        )
-    }
 
     SilicaListView {
         id: listView
@@ -96,45 +59,6 @@ Page {
                 width: parent.width
                 height: 100
             }
-
-            /*
-            TextField {
-                id: profileHostField
-                placeholderText: "Host"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: profileNameField.y+profileNameField.height
-            }
-
-            TextField {
-                id: profilePortField
-                placeholderText: "Port"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: profileHostField.y+profileHostField.height
-            }
-
-            TextField {
-                id: profileUsernameField
-                placeholderText: "Username"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: profilePortField.y+profilePortField.height
-            }
-
-            TextField {
-                id: profilePasswordField
-                placeholderText: "Password"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: profileUsernameField.y+profileUsernameField.height
-                echoMode: TextInput.Password
-            }
-            */
 
             TextField {
                 id: profileCommandField
@@ -181,14 +105,11 @@ Page {
                     profileName=profileNameField.text
                     profileHostId=profileHostField.currentIndex
                     profileHost=profileHostField.currentItem.text
-                    //profilePort=profilePortField.text
-                    //profileUsername=profileUsernameField.text
-                    //profilePassword=profilePasswordField.text
                     profileCommand=profileCommandField.text
 
                     console.log("profileName: " + profileName + "profileHostId: " + profileHostId + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
 
-                    saveProfile()
+                    dbFunction.saveProfile()
                     var dialog = pageStack.push(savedOK)
                 }
             }

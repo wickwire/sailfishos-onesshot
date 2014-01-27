@@ -1,26 +1,40 @@
+/*
+  Copyright (C) 2013 Jolla Ltd.
+  Contact: Thomas Perl <thomas.perl@jollamobile.com>
+  All rights reserved.
+
+  You may use this file under the terms of BSD license as follows:
+
+  Redistribution and use in source and binary forms, with or without
+  modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the Jolla Ltd nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR CONTRIBUTORS BE LIABLE FOR
+  ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtQuick.LocalStorage 2.0
-
 
 Page {
     id: page
 
-    property var db: null
-
-    function dropDB() {
-
-        if(db !== null) return;
-
-        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
-
-        db.transaction(
-            function(tx) {
-                tx.executeSql('DROP TABLE oneSSHotProfiles;');
-                tx.executeSql('DROP TABLE oneSSHotHosts;');
-            }
-        )
-    }
+    DBFunctions{ id: dbFunction }
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
@@ -28,6 +42,7 @@ Page {
 
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
+
             MenuItem {
                 text: "Add New Profile"
                 onClicked: pageStack.push("ProfileCreate.qml")
@@ -39,7 +54,6 @@ Page {
             MenuItem {
                 text: "Clear DB"
                 onClicked: {
-                    dropDB()
                     var dialog = pageStack.push("DropDB.qml")
                 }
             }
@@ -52,62 +66,13 @@ Page {
         // Tell SilicaFlickable the height of its content.
         contentHeight: column.height
 
-
-
-        Component.onCompleted: {
-            //listProfiles()
-            //console.log("rs.rows.length: " + rs.rows.length)
-
-        }
-
         ListModel{
             id: profileModel
 
-            property var db: null
-            property var rs: null
-
-            function listProfiles() {
-
-                if(db !== null) return;
-
-                db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
-
-                db.transaction(
-                    function(tx) {
-
-                        //debug only: drop table on start up
-                        //tx.executeSql('DROP TABLE oneSSHot;');
-
-                        // Create the database if it doesn't already exist
-                        //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles( profileName TEXT, profileHostId INT, profileHost TEXT, profileCommand TEXT);');
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts( hostName TEXT, hostPort TEXT, hostUser TEXT);');
-
-
-                        // Show all added profiles
-
-                        rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
-
-                        for(var i = 0; i < rs.rows.length; i++) {
-                            profileModel.append({"name":rs.rows.item(i).profileName,"hostId":rs.rows.item(i).profileHostId,"host":rs.rows.item(i).profileHost,"command":rs.rows.item(i).profileCommand})
-                            console.log('HomeScreen: '+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHostId+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
-                        }
-
-                        if(rs.rows.length === 0){
-                            console.log("Profiles are empty")
-                            profileModel.clear()
-                            profileModel.append({"name":"<Empty Profile List>\n\nSlide down to add a Profile"})
-                        }
-                    }
-                )
-
-            }
 
             Component.onCompleted: {
-
-                listProfiles()
+                dbFunction.listProfiles()
             }
-
         }
 
         SilicaListView {
@@ -143,15 +108,10 @@ Page {
                         "activeHost" : host,
                         "activeCommand" : command
                     };
-
-                    //pageStack.push("ProfileUpdate.qml")
                     pageStack.push("ProfileUpdate.qml",selectedProfile)
                 }
             }
             VerticalScrollDecorator {}
         }
-
     }
 }
-
-

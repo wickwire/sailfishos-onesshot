@@ -25,7 +25,8 @@ OTHER_FILES += qml/oneSSHot.qml \
     qml/pages/ProfileCreate.qml \
     qml/pages/ProfileUpdate.qml \
     qml/pages/HostCreate.qml \
-    qml/pages/HostDelete.qml
+    qml/pages/HostDelete.qml \
+    qml/pages/DBFunctions.qml
 
 HEADERS += \
     src/sshexecutecmd.h

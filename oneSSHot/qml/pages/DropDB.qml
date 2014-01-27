@@ -33,6 +33,8 @@ import Sailfish.Silica 1.0
 
     Dialog {
 
+        DBFunctions{ id: dbFunction }
+
         id: droppedOK
 
         Text{
@@ -47,43 +49,6 @@ import Sailfish.Silica 1.0
             pageStack.clear()
             pageStack.push("HomeScreen.qml")
         }
+
+        Component.onCompleted: dbFunction.dropDB()
  }
-
-    /*
-    SilicaListView {
-        id: listView
-        model: 1
-        anchors.fill: parent
-        header: PageHeader {
-            title: "Clear DB"
-        }
-
-        delegate: BackgroundItem {
-            id: delegate
-            height: 400
-
-
-            Component.onCompleted: {
-
-                console.log("to be dropped")
-                dropDB()
-                console.log("dropped OK")
-            }
-
-            Button {
-
-                id: droppedOK
-                width: parent.width
-                text: "DB dropped!"
-                y: 100
-                anchors.horizontalCenter: parent.horizontalCenter
-
-                onClicked: {
-                    pageStack.clear()
-                    pageStack.push("HomeScreen.qml")
-                }
-            }
-        }
-    }
-    */
-

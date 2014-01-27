@@ -30,15 +30,11 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtQuick.LocalStorage 2.0
-
 
 Page {
     id: page
 
-
-    property var db: null
-    property var rs: null
+    DBFunctions{ id: dbFunction}
 
     property string profileName: null
     property int profileHostId
@@ -49,23 +45,6 @@ Page {
     property string activeHost
     property int activeHostId
     property string activeCommand
-
-    function updateProfile() {
-
-        if(db !== null) return;
-
-        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
-
-        db.transaction(
-            function(tx) {
-
-                rs = tx.executeSql('SELECT profileName FROM oneSSHotProfiles WHERE profileName = "cenas";');
-
-                tx.executeSql('UPDATE oneSSHotProfiles SET profileName="' + profileName + '", profileHostId=' + profileHostId + ', profileHost="' + profileHost + '", profileCommand="' + profileCommand + '" WHERE profileName="' + activeProfile + '";');
-            }
-        )
-    }
-
 
     SilicaListView {
         id: listView
@@ -139,7 +118,7 @@ Page {
 
                     console.log("profileName: " + profileName + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
 
-                    updateProfile()
+                    dbFunction.updateProfile()
 
                     var dialog = pageStack.push(savedOK)
                 }
@@ -167,8 +146,3 @@ Page {
         VerticalScrollDecorator {}
     }
 }
-
-
-
-
-
