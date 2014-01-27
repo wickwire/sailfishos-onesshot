@@ -45,7 +45,8 @@ Page {
 
         db.transaction(
             function(tx) {
-                tx.executeSql('DROP TABLE oneSSHot;');
+                tx.executeSql('DROP TABLE oneSSHotProfiles;');
+                tx.executeSql('DROP TABLE oneSSHotHosts;');
             }
         )
     }

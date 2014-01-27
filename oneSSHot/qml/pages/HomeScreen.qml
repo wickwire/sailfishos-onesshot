@@ -14,7 +14,7 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Add New Profile"
-                onClicked: pageStack.push(Qt.resolvedUrl("AddProfile.qml"))
+                onClicked: pageStack.push(Qt.resolvedUrl("ProfileCreate.qml"))
             }
             MenuItem {
                 text: "Remove Profiles"
@@ -60,17 +60,18 @@ Page {
                         //tx.executeSql('DROP TABLE oneSSHot;');
 
                         // Create the database if it doesn't already exist
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
+                        //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles( profileName TEXT, profileHost TEXT, profileCommand TEXT);');
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts( hostName TEXT, hostPort TEXT, hostUser TEXT);');
 
-                        // Add (another) profile row
-                        //tx.executeSql('INSERT INTO oneSSHot VALUES(?, ?, ?, ?, ?, ?);', ['writeEcho', '192.168.55.104', '22', 'wickwire', 'Sp4rt4kusDun3', 'batata']);
 
                         // Show all added profiles
 
-                        rs = tx.executeSql('SELECT * FROM oneSSHot;');
+                        rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
                         for(var i = 0; i < rs.rows.length; i++) {
-                            profileModel.append({"name":rs.rows.item(i).profileName,"host":rs.rows.item(i).profileHost,"port":rs.rows.item(i).profilePort,"username":rs.rows.item(i).profileUser,"password":rs.rows.item(i).profilePass,"command":rs.rows.item(i).profileCommand})
+                            profileModel.append({"name":rs.rows.item(i).profileName,"host":rs.rows.item(i).profileHost,"command":rs.rows.item(i).profileCommand})
+                            console.log('HomeScreen: '+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
                         }
 
                         if(rs.rows.length === 0){
@@ -112,6 +113,26 @@ Page {
                     //sshCmd.executeSSH("wickwire", "192.168.55.100", "22", "echo `date +'%Y-%m-%d %H:%M:%S'` > /home/wickwire/cenas.txt")
                     sshCmd.executeSSH(username, host, port, command)
                     console.log("Clicked " + name)
+                }
+
+                onPressAndHold: {
+                    console.log("HomeScreen Long Press: " + name + "|" + host + "|" + command);
+
+                    var selectedProfile = {
+                        "activeProfile" : name
+                    };
+
+                    var selectedHost = {
+                        "activeHost" : host
+                    };
+
+                    var selectedCommand= {
+                        "activeCommand" : command
+                    };
+
+
+                    //pageStack.push("ProfileUpdate.qml")
+                    pageStack.push("ProfileUpdate.qml",selectedProfile,selectedHost,selectedCommand)
                 }
             }
             VerticalScrollDecorator {}

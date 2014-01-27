@@ -19,11 +19,13 @@ OTHER_FILES += qml/oneSSHot.qml \
     rpm/oneSSHot.yaml \
     oneSSHot.desktop \
     qml/pages/HomeScreen.qml \
-    qml/pages/AddProfile.qml \
-    qml/pages/ManageProfiles.qml \
     qml/pages/AboutPage.qml \
-    qml/pages/RemoveProfiles.qml \
-    qml/pages/DropDB.qml
+    qml/pages/DropDB.qml \
+    qml/pages/ProfileDelete.qml \
+    qml/pages/ProfileCreate.qml \
+    qml/pages/ProfileUpdate.qml \
+    qml/pages/HostCreate.qml \
+    qml/pages/HostDelete.qml
 
 HEADERS += \
     src/sshexecutecmd.h

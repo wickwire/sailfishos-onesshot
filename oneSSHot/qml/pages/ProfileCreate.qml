@@ -39,11 +39,12 @@ Page {
 
     property var db: null
     property var rs: null
+
     property string profileName: null
     property string profileHost: null
-    property string profilePort: null
-    property string profileUsername: null
-    property string profilePassword: null
+    //property string profilePort: null
+    //property string profileUsername: null
+    //property string profilePassword: null
     property string profileCommand: null
 
     function saveProfile() {
@@ -55,22 +56,17 @@ Page {
         db.transaction(
             function(tx) {
 
-                //tx.executeSql('DROP TABLE oneSSHot;');
-
-                // Create the database if it doesn't already exist
-                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
-
                 // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHot VALUES(?, ?, ?, ?, ?, ?);', [profileName, profileHost, profilePort, profileUsername, profilePassword, profileCommand]);
+                tx.executeSql('INSERT INTO oneSSHotProfiles VALUES(?, ?, ?);', [profileName, profileHost, profileCommand]);
 
-                rs = tx.executeSql('SELECT * FROM oneSSHot;');
+                rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
                     console.log(rs.rows.item(i).profileName
                                 + "|" + rs.rows.item(i).profileHost
-                                + "|" + rs.rows.item(i).profilePort
-                                + "|" + rs.rows.item(i).profileUser
-                                + "|" + rs.rows.item(i).profilePass
+                                //+ "|" + rs.rows.item(i).profilePort
+                                //+ "|" + rs.rows.item(i).profileUser
+                                //+ "|" + rs.rows.item(i).profilePass
                                 + "|" + rs.rows.item(i).profileCommand
                     )
                 }
@@ -99,6 +95,7 @@ Page {
                 height: 100
             }
 
+            /*
             TextField {
                 id: profileHostField
                 placeholderText: "Host"
@@ -135,6 +132,7 @@ Page {
                 y: profileUsernameField.y+profileUsernameField.height
                 echoMode: TextInput.Password
             }
+            */
 
             TextField {
                 id: profileCommandField
@@ -142,21 +140,51 @@ Page {
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 width: parent.width
                 height: 100
-                y: profilePasswordField.y+profilePasswordField.height
+                y: profileNameField.y+profileNameField.height
+            }
+
+            ComboBox {
+                id: profileHostField
+                width: parent.width
+                label: "Host"
+                y: profileCommandField.y+profileCommandField.height
+                height: 100
+
+                menu: ContextMenu {
+                    id: contextMenu
+                    MenuItem { text: "host1" }
+                    MenuItem { text: "host2" }
+                    MenuItem { text: "host3" }
+                    MenuItem { text: "host1" }
+                    MenuItem { text: "host2" }
+                    MenuItem { text: "host3" }
+                    MenuItem { text: "host1" }
+                    MenuItem { text: "host2" }
+                    MenuItem { text: "host3" }
+                    MenuItem { text: "host1" }
+                    MenuItem { text: "host2" }
+                    MenuItem { text: "host3" }
+                    MenuItem { text: "host1" }
+                    MenuItem { text: "host2" }
+                    MenuItem { text: "host3" }
+                }
             }
 
             Button{
                 id: profileSave
                 text: "Save Profile"
-                y: profileCommandField.y+profileCommandField.height
+                y: profileHostField.y+profileHostField.height
 
                 onClicked: {
                     profileName=profileNameField.text
-                    profileHost=profileHostField.text
-                    profilePort=profilePortField.text
-                    profileUsername=profileUsernameField.text
-                    profilePassword=profilePasswordField.text
+                    profileHost=profileHostField.currentItem.text
+                    //profilePort=profilePortField.text
+                    //profileUsername=profileUsernameField.text
+                    //profilePassword=profilePasswordField.text
                     profileCommand=profileCommandField.text
+
+                    console.log("profileName: " + profileName + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
+
                     saveProfile()
                     var dialog = pageStack.push(savedOK)
                 }
