@@ -30,28 +30,26 @@
 
 import QtQuick 2.0
 import Sailfish.Silica 1.0
-import QtQuick.LocalStorage 2.0
 
-Page {
-    id: page
+    Dialog {
 
-    property var db: null
+        id: droppedOK
 
-    function dropDB() {
+        Text{
+            width: parent.width
+            text: "DB successfully cleared!"
+            color: "white"
+            y: 100
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
 
-        if(db !== null) return;
+        onClicked: {
+            pageStack.clear()
+            pageStack.push("HomeScreen.qml")
+        }
+ }
 
-        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
-
-        db.transaction(
-            function(tx) {
-                tx.executeSql('DROP TABLE oneSSHotProfiles;');
-                tx.executeSql('DROP TABLE oneSSHotHosts;');
-            }
-        )
-    }
-
-
+    /*
     SilicaListView {
         id: listView
         model: 1
@@ -87,4 +85,5 @@ Page {
             }
         }
     }
-}
+    */
+

@@ -6,6 +6,22 @@ import QtQuick.LocalStorage 2.0
 Page {
     id: page
 
+    property var db: null
+
+    function dropDB() {
+
+        if(db !== null) return;
+
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+                tx.executeSql('DROP TABLE oneSSHotProfiles;');
+                tx.executeSql('DROP TABLE oneSSHotHosts;');
+            }
+        )
+    }
+
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
         anchors.fill: parent
@@ -18,11 +34,14 @@ Page {
             }
             MenuItem {
                 text: "Remove Profiles"
-                onClicked: pageStack.push("RemoveProfiles.qml")
+                onClicked: pageStack.push("ProfileDelete.qml")
             }
             MenuItem {
                 text: "Clear DB"
-                onClicked: pageStack.push("DropDB.qml")
+                onClicked: {
+                    dropDB()
+                    var dialog = pageStack.push("DropDB.qml")
+                }
             }
             MenuItem {
                 text: "About"
