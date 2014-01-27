@@ -41,20 +41,14 @@ Page {
     property var rs: null
 
     property string profileName: null
+    property int profileHostId
     property string profileHost: null
     property string profileCommand: null
 
     property string activeProfile
     property string activeHost
+    property int activeHostId
     property string activeCommand
-
-
-    onStatusChanged: {
-        if (status === PageStatus.Active)
-        {
-            sharedState.activeProfile = activeProfile;
-        }
-    }
 
     function updateProfile() {
 
@@ -67,7 +61,7 @@ Page {
 
                 rs = tx.executeSql('SELECT profileName FROM oneSSHotProfiles WHERE profileName = "cenas";');
 
-                tx.executeSql('UPDATE oneSSHotProfiles SET profileName="' + profileName + '", profileHost="' + profileHost + '", profileCommand="' + profileCommand + '" WHERE profileName="' + activeProfile + '";');
+                tx.executeSql('UPDATE oneSSHotProfiles SET profileName="' + profileName + '", profileHostId=' + profileHostId + ', profileHost="' + profileHost + '", profileCommand="' + profileCommand + '" WHERE profileName="' + activeProfile + '";');
             }
         )
     }
@@ -108,7 +102,7 @@ Page {
                 label: "Host"
                 y: profileCommandField.y+profileCommandField.height
                 height: 100
-                currentItem: activeHost
+                currentIndex: activeHostId
 
                 menu: ContextMenu {
                     id: contextMenu
@@ -137,6 +131,7 @@ Page {
 
                 onClicked: {
                     profileName=profileNameField.text
+                    profileHostId=profileHostField.currentIndex
                     profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 

@@ -14,19 +14,19 @@ Page {
         PullDownMenu {
             MenuItem {
                 text: "Add New Profile"
-                onClicked: pageStack.push(Qt.resolvedUrl("ProfileCreate.qml"))
+                onClicked: pageStack.push("ProfileCreate.qml")
             }
             MenuItem {
                 text: "Remove Profiles"
-                onClicked: pageStack.push(Qt.resolvedUrl("RemoveProfiles.qml"))
+                onClicked: pageStack.push("RemoveProfiles.qml")
             }
             MenuItem {
                 text: "Clear DB"
-                onClicked: pageStack.push(Qt.resolvedUrl("DropDB.qml"))
+                onClicked: pageStack.push("DropDB.qml")
             }
             MenuItem {
                 text: "About"
-                onClicked: pageStack.push(Qt.resolvedUrl("AboutPage.qml"))
+                onClicked: pageStack.push("AboutPage.qml")
             }
         }
 
@@ -61,7 +61,7 @@ Page {
 
                         // Create the database if it doesn't already exist
                         //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
-                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles( profileName TEXT, profileHost TEXT, profileCommand TEXT);');
+                        tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles( profileName TEXT, profileHostId INT, profileHost TEXT, profileCommand TEXT);');
                         tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts( hostName TEXT, hostPort TEXT, hostUser TEXT);');
 
 
@@ -70,8 +70,8 @@ Page {
                         rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
                         for(var i = 0; i < rs.rows.length; i++) {
-                            profileModel.append({"name":rs.rows.item(i).profileName,"host":rs.rows.item(i).profileHost,"command":rs.rows.item(i).profileCommand})
-                            console.log('HomeScreen: '+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
+                            profileModel.append({"name":rs.rows.item(i).profileName,"hostId":rs.rows.item(i).profileHostId,"host":rs.rows.item(i).profileHost,"command":rs.rows.item(i).profileCommand})
+                            console.log('HomeScreen: '+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHostId+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
                         }
 
                         if(rs.rows.length === 0){
@@ -116,23 +116,17 @@ Page {
                 }
 
                 onPressAndHold: {
-                    console.log("HomeScreen Long Press: " + name + "|" + host + "|" + command);
+                    console.log("HomeScreen Long Press: " + name + "|" + hostId + "|" + host + "|" + command);
 
                     var selectedProfile = {
-                        "activeProfile" : name
-                    };
-
-                    var selectedHost = {
-                        "activeHost" : host
-                    };
-
-                    var selectedCommand= {
+                        "activeProfile" : name,
+                        "activeHostId" : hostId,
+                        "activeHost" : host,
                         "activeCommand" : command
                     };
 
-
                     //pageStack.push("ProfileUpdate.qml")
-                    pageStack.push("ProfileUpdate.qml",selectedProfile,selectedHost,selectedCommand)
+                    pageStack.push("ProfileUpdate.qml",selectedProfile)
                 }
             }
             VerticalScrollDecorator {}

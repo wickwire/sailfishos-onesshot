@@ -42,6 +42,7 @@ Page {
 
     property string profileName: null
     property string profileHost: null
+    property int profileHostId
     //property string profilePort: null
     //property string profileUsername: null
     //property string profilePassword: null
@@ -57,12 +58,13 @@ Page {
             function(tx) {
 
                 // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHotProfiles VALUES(?, ?, ?);', [profileName, profileHost, profileCommand]);
+                tx.executeSql('INSERT INTO oneSSHotProfiles VALUES(?, ?, ?, ?);', [profileName, profileHostId, profileHost, profileCommand]);
 
                 rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
                     console.log(rs.rows.item(i).profileName
+                                + "|" + rs.rows.item(i).profileHostId
                                 + "|" + rs.rows.item(i).profileHost
                                 //+ "|" + rs.rows.item(i).profilePort
                                 //+ "|" + rs.rows.item(i).profileUser
@@ -155,18 +157,18 @@ Page {
                     MenuItem { text: "host1" }
                     MenuItem { text: "host2" }
                     MenuItem { text: "host3" }
-                    MenuItem { text: "host1" }
-                    MenuItem { text: "host2" }
-                    MenuItem { text: "host3" }
-                    MenuItem { text: "host1" }
-                    MenuItem { text: "host2" }
-                    MenuItem { text: "host3" }
-                    MenuItem { text: "host1" }
-                    MenuItem { text: "host2" }
-                    MenuItem { text: "host3" }
-                    MenuItem { text: "host1" }
-                    MenuItem { text: "host2" }
-                    MenuItem { text: "host3" }
+                    MenuItem { text: "host4" }
+                    MenuItem { text: "host5" }
+                    MenuItem { text: "host6" }
+                    MenuItem { text: "host7" }
+                    MenuItem { text: "host8" }
+                    MenuItem { text: "host9" }
+                    MenuItem { text: "host10" }
+                    MenuItem { text: "host11" }
+                    MenuItem { text: "host12" }
+                    MenuItem { text: "host13" }
+                    MenuItem { text: "host14" }
+                    MenuItem { text: "host15" }
                 }
             }
 
@@ -177,13 +179,14 @@ Page {
 
                 onClicked: {
                     profileName=profileNameField.text
+                    profileHostId=profileHostField.currentIndex
                     profileHost=profileHostField.currentItem.text
                     //profilePort=profilePortField.text
                     //profileUsername=profileUsernameField.text
                     //profilePassword=profilePasswordField.text
                     profileCommand=profileCommandField.text
 
-                    console.log("profileName: " + profileName + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
+                    console.log("profileName: " + profileName + "profileHostId: " + profileHostId + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
 
                     saveProfile()
                     var dialog = pageStack.push(savedOK)
