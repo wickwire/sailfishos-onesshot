@@ -70,7 +70,7 @@ Page {
                         rs = tx.executeSql('SELECT * FROM oneSSHot;');
 
                         for(var i = 0; i < rs.rows.length; i++) {
-                            profileModel.append([{"name":rs.rows.item(i).profileName}])
+                            profileModel.append({"name":rs.rows.item(i).profileName,"host":rs.rows.item(i).profileHost,"port":rs.rows.item(i).profilePort,"username":rs.rows.item(i).profileUser,"password":rs.rows.item(i).profilePass,"command":rs.rows.item(i).profileCommand})
                         }
 
                         if(rs.rows.length === 0){
@@ -108,7 +108,9 @@ Page {
                     color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
                 onClicked: {
-                    sshCmd.executeSSH("wickwire", "192.168.55.100", "22", "echo `date +'%Y-%m-%d %H:%M:%S'` > /home/wickwire/cenas.txt")
+                    console.log("checking: " + username + host + port + command);
+                    //sshCmd.executeSSH("wickwire", "192.168.55.100", "22", "echo `date +'%Y-%m-%d %H:%M:%S'` > /home/wickwire/cenas.txt")
+                    sshCmd.executeSSH(username, host, port, command)
                     console.log("Clicked " + name)
                 }
             }
