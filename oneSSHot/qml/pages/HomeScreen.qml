@@ -48,7 +48,7 @@ Page {
                 onClicked: pageStack.push("ProfileCreate.qml")
             }
             MenuItem {
-                text: "Remove Profiles"
+                text: "Delete Profiles"
                 onClicked: pageStack.push("ProfileDelete.qml")
             }
             MenuItem {

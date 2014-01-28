@@ -34,23 +34,37 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+
+    DBFunctions{ id: dbFunction }
+
+    ListModel{
+        id: profileModel
+
+
+        Component.onCompleted: {
+            dbFunction.listProfiles()
+        }
+    }
+
     SilicaListView {
         id: listView
-        model: 20
+        model: profileModel
         anchors.fill: parent
         header: PageHeader {
-            title: "Nested Page"
+            title: "Delete Profiles"
         }
         delegate: BackgroundItem {
             id: delegate
 
-            Label {
+            TextSwitch {
                 x: Theme.paddingLarge
-                text: "Item " + index
                 anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                text: name
+                onCheckedChanged: {
+                    //device.setStatus(checked ? DeviceState.Armed : DeviceState.Disarmed)
+                    console.log(name + " checked? " + checked)
+                }
             }
-            onClicked: console.log("Clicked " + index)
         }
         VerticalScrollDecorator {}
     }
