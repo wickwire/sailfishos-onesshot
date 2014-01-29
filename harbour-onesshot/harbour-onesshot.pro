@@ -6,7 +6,7 @@
 #         - desktop icon filename must be changed
 #         - desktop filename must be changed
 #         - icon definition filename in desktop file must be changed
-TARGET = oneSSHot
+TARGET = harbour-onesshot
 
 CONFIG += sailfishapp
 
