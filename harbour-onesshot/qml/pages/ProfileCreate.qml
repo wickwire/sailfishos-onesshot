@@ -79,6 +79,7 @@ Page {
 
                 menu: ContextMenu {
                     id: contextMenu
+
                     MenuItem { text: "host1" }
                     MenuItem { text: "host2" }
                     MenuItem { text: "host3" }

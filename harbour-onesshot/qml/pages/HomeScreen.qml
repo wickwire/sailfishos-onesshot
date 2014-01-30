@@ -44,6 +44,14 @@ Page {
         PullDownMenu {
 
             MenuItem {
+                text: "Add New Host"
+                onClicked: pageStack.push("HostCreate.qml")
+            }
+            MenuItem {
+                text: "Delete Hosts"
+                onClicked: pageStack.push("HostDelete.qml")
+            }
+            MenuItem {
                 text: "Add New Profile"
                 onClicked: pageStack.push("ProfileCreate.qml")
             }

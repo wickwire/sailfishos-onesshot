@@ -34,23 +34,85 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+
+    DBFunctions{ id: dbFunction}
+
+    property int hostId
+    property string hostName
+    property int hostPort
+    property string hostUser
+
     SilicaListView {
         id: listView
-        model: 20
+        model: 1
         anchors.fill: parent
         header: PageHeader {
-            title: "Nested Page"
+            title: "Add Host"
         }
         delegate: BackgroundItem {
             id: delegate
 
-            Label {
-                x: Theme.paddingLarge
-                text: "Item " + index
-                anchors.verticalCenter: parent.verticalCenter
+            TextField {
+                id: hostNameField
+                placeholderText: "Host"
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
             }
-            onClicked: console.log("Clicked " + index)
+
+            TextField {
+                id: hostPortField
+                placeholderText: "Port"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: hostNameField.y+hostNameField.height
+            }
+
+            TextField {
+                id: hostUserField
+                placeholderText: "User"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: hostPortField.y+hostPortField.height
+            }
+
+            Button{
+                id: hostAdd
+                text: "Add Host"
+                y: hostUserField.y+hostUserField.height
+
+                onClicked: {
+                    hostName=hostNameField.text
+                    hostPort=hostPortField.text
+                    hostUser=hostUserField.text
+
+                    console.log("hostName: " + hostName + "hostPort: " + hostPort + "hostUser: " + hostUser)
+
+                    dbFunction.addHost()
+                    var dialog = pageStack.push(addedOK)
+                }
+            }
+
+
+            Dialog {
+
+                id: addedOK
+
+                Text{
+                    width: parent.width
+                    text: "Host added Successfully!"
+                    color: "white"
+                    y: 100
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                onClicked: {
+                    pageStack.clear()
+                    pageStack.push("HomeScreen.qml")
+                }
+            }
         }
         VerticalScrollDecorator {}
     }

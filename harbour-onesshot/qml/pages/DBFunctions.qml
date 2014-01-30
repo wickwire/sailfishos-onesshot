@@ -6,6 +6,31 @@ Item{
     property var db: null
     property var rs: null
 
+    function addHost(){
+
+        if(db !== null) return;
+
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+
+                // Add (another) profile row
+                tx.executeSql('INSERT INTO oneSSHotHosts (hostName, hostPort, hostUser) VALUES(?, ?, ?);', [hostName, hostPort, hostUser]);
+
+                rs = tx.executeSql('SELECT * FROM oneSSHotHosts;');
+
+                for(var i = 0; i < rs.rows.length; i++) {
+                    console.log("addHost: " + rs.rows.item(i).hostId
+                                + "|" + rs.rows.item(i).hostName
+                                + "|" + rs.rows.item(i).hostPort
+                                + "|" + rs.rows.item(i).hostUser
+                    )
+                }
+            }
+        )
+    }
+
     function listProfiles() {
 
         if(db !== null) return;
@@ -15,13 +40,9 @@ Item{
         db.transaction(
             function(tx) {
 
-                //debug only: drop table on start up
-                //tx.executeSql('DROP TABLE oneSSHot;');
-
                 // Create the database if it doesn't already exist
-                //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
                 tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles(profileId INTEGER PRIMARY KEY AUTOINCREMENT, profileName TEXT, profileHostId INT, profileHost TEXT, profileCommand TEXT);');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts(hostId INTEGER PRIMARY KEY AUTOINCREMENT, hostName TEXT, hostPort TEXT, hostUser TEXT);');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts(hostId INTEGER PRIMARY KEY AUTOINCREMENT, hostName TEXT, hostPort INT, hostUser TEXT);');
 
                 // Show all added profiles
 
