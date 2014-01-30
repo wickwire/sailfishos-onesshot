@@ -61,8 +61,6 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 text: name
                 onCheckedChanged: {
-                    //device.setStatus(checked ? DeviceState.Armed : DeviceState.Disarmed)
-
                     console.log(name + " checked? " + checked)
                 }
             }

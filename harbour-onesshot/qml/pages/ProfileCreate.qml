@@ -36,6 +36,7 @@ Page {
 
     DBFunctions{ id: dbFunction}
 
+    property int profileId
     property string profileName: null
     property string profileHost: null
     property int profileHostId

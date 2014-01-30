@@ -32,17 +32,15 @@ Item{
             function(tx) {
 
                 // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHotProfiles VALUES(?, ?, ?, ?);', [profileName, profileHostId, profileHost, profileCommand]);
+                tx.executeSql('INSERT INTO oneSSHotProfiles (profileName, profileHostId, profileHost, profileCommand) VALUES(?, ?, ?, ?);', [profileName, profileHostId, profileHost, profileCommand]);
 
                 rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
-                    console.log(rs.rows.item(i).profileName
+                    console.log(rs.rows.item(i).profileId
+                                + "|" + rs.rows.item(i).profileName
                                 + "|" + rs.rows.item(i).profileHostId
                                 + "|" + rs.rows.item(i).profileHost
-                                //+ "|" + rs.rows.item(i).profilePort
-                                //+ "|" + rs.rows.item(i).profileUser
-                                //+ "|" + rs.rows.item(i).profilePass
                                 + "|" + rs.rows.item(i).profileCommand
                     )
                 }
@@ -80,7 +78,7 @@ Item{
 
                 // Create the database if it doesn't already exist
                 //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHot( profileName TEXT, profileHost TEXT, profilePort TEXT,profileUser TEXT,profilePass TEXT, profileCommand TEXT);');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles( profileName TEXT, profileHostId INT, profileHost TEXT, profileCommand TEXT);');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles(profileId INT PRIMARY KEY AUTOINCREMENT, profileName TEXT, profileHostId INT, profileHost TEXT, profileCommand TEXT);');
                 tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts( hostName TEXT, hostPort TEXT, hostUser TEXT);');
 
 
@@ -90,7 +88,7 @@ Item{
 
                 for(var i = 0; i < rs.rows.length; i++) {
                     profileModel.append({"name":rs.rows.item(i).profileName,"hostId":rs.rows.item(i).profileHostId,"host":rs.rows.item(i).profileHost,"command":rs.rows.item(i).profileCommand})
-                    console.log('HomeScreen: '+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHostId+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
+                    console.log('HomeScreen: '+rs.rows.item(i).profileId+'|'+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHostId+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
                 }
 
                 if(rs.rows.length === 0){
