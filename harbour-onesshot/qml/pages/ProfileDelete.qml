@@ -35,6 +35,8 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
+    DBFunctions{ id: dbFunction}
+
     property var profilesArray : []
 
     function manageProfiles(profileId,checked){
@@ -52,8 +54,6 @@ Page {
 
         console.log("profilesArray: " + profilesArray.length)
     }
-
-    DBFunctions{ id: dbFunction }
 
     ListModel{
         id: profileModel

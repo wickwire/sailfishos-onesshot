@@ -95,15 +95,11 @@ Item{
 
     function deleteProfiles(){
 
-        if(db !== null) return;
-
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
         db.transaction(
             function(tx) {
-
-                // Add (another) profile row
-                tx.executeSql('DELETE FROM oneSSHotProfiles WHERE profileId = "3";');
+                tx.executeSql('DELETE FROM oneSSHotProfiles WHERE profileId IN ('+ profilesArray +');');
             }
         )
     }
