@@ -37,10 +37,10 @@ Page {
     DBFunctions{ id: dbFunction}
 
     property int profileId
-    property string profileName: null
-    property string profileHost: null
+    property string profileName
+    property string profileHost
     property int profileHostId
-    property string profileCommand: null
+    property string profileCommand
 
     SilicaListView {
         id: listView

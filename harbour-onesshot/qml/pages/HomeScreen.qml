@@ -64,7 +64,7 @@ Page {
         }
 
         // Tell SilicaFlickable the height of its content.
-        contentHeight: column.height
+        //contentHeight: column.height
 
         ListModel{
             id: profileModel
@@ -100,9 +100,10 @@ Page {
                 }
 
                 onPressAndHold: {
-                    console.log("HomeScreen Long Press: " + name + "|" + hostId + "|" + host + "|" + command);
+                    console.log("HomeScreen Long Press: " + profileId + "|" + name + "|" + hostId + "|" + host + "|" + command);
 
                     var selectedProfile = {
+                        "activeProfileId" : profileId,
                         "activeProfile" : name,
                         "activeHostId" : hostId,
                         "activeHost" : host,

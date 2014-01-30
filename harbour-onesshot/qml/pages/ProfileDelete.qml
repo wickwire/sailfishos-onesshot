@@ -35,6 +35,24 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
+    property var profilesArray : []
+
+    function manageProfiles(profileId,checked){
+        if(checked === true){
+            profilesArray.push(profileId)
+        }
+        else{
+            var idx = profilesArray.indexOf(profileId);
+            profilesArray.splice(idx, 1);
+        }
+
+        for(var i=0; i<profilesArray.length;i++){
+            console.log("profilesArray["+i+"] : " + profilesArray[i].toString())
+        }
+
+        console.log("profilesArray: " + profilesArray.length)
+    }
+
     DBFunctions{ id: dbFunction }
 
     ListModel{
@@ -61,10 +79,42 @@ Page {
                 anchors.verticalCenter: parent.verticalCenter
                 text: name
                 onCheckedChanged: {
-                    console.log(name + " checked? " + checked)
+                    console.log(profileId + "|" + name + " checked? " + checked)
+                    manageProfiles(profileId,checked)
                 }
             }
         }
-        VerticalScrollDecorator {}
+
+
+        Button{
+            id: profileDel
+            text: "Delete"
+            y: 600
+
+            onClicked: {
+                dbFunction.deleteProfiles()
+                var dialog = pageStack.push(deletedOK)
+            }
+        }
+
+
+        Dialog {
+
+            id: deletedOK
+
+            Text{
+                width: parent.width
+                text: "Profiles deleted!"
+                color: "white"
+                y: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            onClicked: {
+                pageStack.clear()
+                pageStack.push("HomeScreen.qml")
+            }
+        }
+
     }
 }

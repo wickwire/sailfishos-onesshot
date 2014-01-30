@@ -36,11 +36,13 @@ Page {
 
     DBFunctions{ id: dbFunction}
 
-    property string profileName: null
+    property int profileId
+    property string profileName
     property int profileHostId
-    property string profileHost: null
-    property string profileCommand: null
+    property string profileHost
+    property string profileCommand
 
+    property int activeProfileId
     property string activeProfile
     property string activeHost
     property int activeHostId
@@ -109,14 +111,15 @@ Page {
                 y: profileHostField.y+profileHostField.height
 
                 onClicked: {
+                    profileId=activeProfileId
                     profileName=profileNameField.text
                     profileHostId=profileHostField.currentIndex
                     profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 
-                    console.log("activeProfile: " + activeProfile)
+                    console.log("ProfileUpdate - activeProfile: " + activeProfile)
 
-                    console.log("profileName: " + profileName + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
+                    console.log("ProfileUpdate - activeID: " + profileId + "profileName: " + profileName + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
 
                     dbFunction.updateProfile()
 
