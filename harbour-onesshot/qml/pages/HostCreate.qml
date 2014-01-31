@@ -89,6 +89,8 @@ Page {
                     hostUser=hostUserField.text
 
                     console.log("hostName: " + hostName + "hostPort: " + hostPort + "hostUser: " + hostUser)
+                    //before adding to the sqlite db, check the existence of the public/private key pair and push the public half to the remote server
+                    sshCmd.pushPubKey(hostName,hostPort,hostUser)
 
                     dbFunction.addHost()
                     var dialog = pageStack.push(addedOK)

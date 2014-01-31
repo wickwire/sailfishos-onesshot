@@ -15,6 +15,7 @@ signals:
 
 public slots:
     void executeSSH(QString qmlusername, QString qmlhost, QString qmlport, QString qmlcommand);
+    void pushPubKey(QString qmlhost, QString qmlport, QString qmlusername);
 
 };
 

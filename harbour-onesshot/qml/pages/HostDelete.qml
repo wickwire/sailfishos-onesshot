@@ -34,29 +34,87 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+
+    DBFunctions{ id: dbFunction}
+
+    property var hostsArray : []
+
+    function manageHosts(hostId,checked){
+        if(checked === true){
+            hostsArray.push(hostId)
+        }
+        else{
+            var idx = hostsArray.indexOf(hostId);
+            hostsArray.splice(idx, 1);
+        }
+
+        for(var i=0; i<hostsArray.length;i++){
+            console.log("hostsArray["+i+"] : " + hostsArray[i].toString())
+        }
+
+        console.log("hostsArray: " + hostsArray.length)
+    }
+
+    ListModel{
+        id: profileModel
+
+
+        Component.onCompleted: {
+            dbFunction.listHosts()
+        }
+    }
+
     SilicaListView {
         id: listView
-        model: 20
+        model: profileModel
         anchors.fill: parent
         header: PageHeader {
-            title: "Nested Page"
+            title: "Delete Hosts"
         }
         delegate: BackgroundItem {
             id: delegate
 
-            Label {
+            TextSwitch {
                 x: Theme.paddingLarge
-                text: "Item " + index
                 anchors.verticalCenter: parent.verticalCenter
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                text: name
+                onCheckedChanged: {
+                    console.log(hostId + "|" + name + " checked? " + checked)
+                    manageHosts(hostId,checked)
+                }
             }
-            onClicked: console.log("Clicked " + index)
         }
-        VerticalScrollDecorator {}
+
+
+        Button{
+            id: profileDel
+            text: "Delete"
+            y: 600
+
+            onClicked: {
+                dbFunction.deleteHosts()
+                var dialog = pageStack.push(deletedOK)
+            }
+        }
+
+
+        Dialog {
+
+            id: deletedOK
+
+            Text{
+                width: parent.width
+                text: "Hosts deleted!"
+                color: "white"
+                y: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            onClicked: {
+                pageStack.clear()
+                pageStack.push("HomeScreen.qml")
+            }
+        }
+
     }
 }
-
-
-
-
-
