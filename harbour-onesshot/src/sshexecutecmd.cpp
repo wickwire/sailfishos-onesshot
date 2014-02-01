@@ -2,6 +2,9 @@
 #include <QProcess>
 #include <QDebug>
 #include <QFile>
+#include <QIODevice>
+#include <QTextStream>
+#include <QStringList>
 
 sshExecuteCmd::sshExecuteCmd(QObject *parent) :
     QObject(parent)
@@ -30,14 +33,13 @@ void sshExecuteCmd::executeSSH(QString qmlusername, QString qmlhost, QString qml
     proc->startDetached("ssh " + qtusername + "@" + qthost + " -p " + qtport + " " + qtcommand);
 }
 
-void sshExecuteCmd::pushPubKey(QString qmlhost, QString qmlport, QString qmlusername){
-    QString qthost, qtport, qtusername;
+void sshExecuteCmd::pushPubKey(QString qmlhost, int qmlport, QString qmlusername){
+    QString qthost, qtusername;
+    int qtport;
     QProcess *proc = new QProcess();
     qthost=qmlhost;
     qtport=qmlport;
     qtusername=qmlusername;
-
-    qDebug()<<"Inside pushPubKey";
 
     //check if a private/public keypair exists.
     //if it doesn't, generate it:
@@ -50,20 +52,22 @@ void sshExecuteCmd::pushPubKey(QString qmlhost, QString qmlport, QString qmluser
 
     //find/read public key half
     QFile pubKey("/home/nemo/.ssh/id_rsa.pub");
+    if (!pubKey.open(QIODevice::ReadOnly | QIODevice::Text))
+             return;
 
     if(!pubKey.exists())
     {
-      qDebug()<< "ssh key pair not found, generating...";
-      proc->startDetached("ssh-keygen -t rsa -b 2048 -f /home/nemo/.ssh/id_rsa -N ''");
+      qDebug("ssh key pair not found, generating...");
+      proc->start("ssh-keygen -t rsa -b 2048 -f /home/nemo/.ssh/id_rsa");
+      qDebug("ssh key pair generated successfully!");
     }
 
-    if (!pubKey.open(QIODevice::ReadOnly | QIODevice::Text))
-             return;
-    QTextStream in(&pubKey);
-    QString pubKeyString=in.readAll();
+    QTextStream textStream(&pubKey);
+    QString keyString = textStream.readAll();
+    pubKey.close();
 
-    qDebug()<< "Public Key Found: \n\n" + pubKeyString;
-
+    //outputs the string inside id_rsa.pub, this is the public key
+    qDebug() << keyString;
 
 
 }
