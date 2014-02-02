@@ -6,6 +6,16 @@
 #include <QTextStream>
 #include <QStringList>
 
+#include <QTimer>
+#include <QEventLoop>
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+
+
 sshExecuteCmd::sshExecuteCmd(QObject *parent) :
     QObject(parent)
 {
@@ -65,6 +75,60 @@ void sshExecuteCmd::pushPubKey(QString qmlhost, int qmlport, QString qmlusername
     QTextStream textStream(&pubKey);
     QString keyString = textStream.readAll();
     pubKey.close();
+
+    //hastebin
+
+    QNetworkAccessManager manager;
+    QEventLoop q;
+    QTimer tT;
+
+    QNetworkRequest request;
+    QByteArray postData;
+
+    postData.append(keyString);
+
+    QByteArray hasteBinJSON;
+
+    request.setRawHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.setUrl(QUrl("http://hastebin.com/documents"));
+
+    tT.setSingleShot(true);
+
+    QObject::connect(&tT, SIGNAL(timeout()),&q, SLOT(quit()));
+
+    QObject::connect(&manager, SIGNAL(finished(QNetworkReply*)),
+
+            &q, SLOT(quit()));
+
+    QNetworkReply *reply = manager.post(request, postData);
+
+    tT.start(1000); // 1s timeout
+
+    q.exec();
+
+    if(tT.isActive()){
+
+        // download complete
+        hasteBinJSON = reply->readAll().data();
+
+        QJsonDocument doc = QJsonDocument::fromJson(hasteBinJSON);
+        QJsonObject obj = doc.object();
+        QJsonValue hastebinKey = obj.value("key");
+
+        qDebug() <<  "http://hastebin.com/" + hastebinKey.toString();
+
+        tT.stop();
+
+    } else {
+
+        qDebug() <<  "Timeout";
+
+        // timeout
+
+    }
+
+    //hastebin
+
 
     //outputs the string inside id_rsa.pub, this is the public key
     qDebug() << keyString;
