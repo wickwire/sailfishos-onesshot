@@ -42,7 +42,10 @@ Page {
 
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
-
+            MenuItem {
+                text: "SSH Public Key"
+                onClicked: pageStack.push("GetSSHKey.qml")
+            }
             MenuItem {
                 text: "Add New Host"
                 onClicked: pageStack.push("HostCreate.qml")

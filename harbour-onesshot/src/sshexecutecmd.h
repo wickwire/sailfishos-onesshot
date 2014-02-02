@@ -6,17 +6,29 @@
 
 class sshExecuteCmd : public QObject
 {
+    Q_PROPERTY(QString pubKey READ getPubKey NOTIFY pubKeyUpdated)
+    Q_PROPERTY(QString pubKeyURL READ getPubKeyURL NOTIFY pubKeyURLUpdated)
+
     Q_OBJECT
 public:
     explicit sshExecuteCmd(QObject *parent = 0);
-    //QString qmlhost, qmlport, qmluser, qmlcommand;
+    QString cplusplus_pubKey;
+    QString cplusplus_pubKeyURL;
+    QString getPubKey();
+    QString getPubKeyURL();
 
 signals:
+    QVariant pubKeyUpdated(QVariant sshkey);
+    QVariant pubKeyURLUpdated(QVariant sshkeyURL);
+
+    void finished();
 
 public slots:
     void executeSSH(QString qmlusername, QString qmlhost, QString qmlport, QString qmlcommand);
-    void pushPubKey(QString qmlhost, int qmlport, QString qmlusername);
-    void hasteBinIt(QString keyString);
+    void genKey();
+    QString readKey();
+    void publishPubKey(QString keyString);
+
 };
 
 #endif // SSHEXECUTECMD_H

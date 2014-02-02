@@ -43,13 +43,9 @@ void sshExecuteCmd::executeSSH(QString qmlusername, QString qmlhost, QString qml
     proc->startDetached("ssh " + qtusername + "@" + qthost + " -p " + qtport + " " + qtcommand);
 }
 
-void sshExecuteCmd::pushPubKey(QString qmlhost, int qmlport, QString qmlusername){
-    QString qthost, qtusername;
-    int qtport;
+void sshExecuteCmd::genKey(){
+
     QProcess *proc = new QProcess();
-    qthost=qmlhost;
-    qtport=qmlport;
-    qtusername=qmlusername;
 
     //check if a private/public keypair exists.
     //if it doesn't, generate it:
@@ -72,20 +68,31 @@ void sshExecuteCmd::pushPubKey(QString qmlhost, int qmlport, QString qmlusername
       qDebug("ssh key pair generated successfully!");
     }
 
-    QTextStream textStream(&pubKey);
-    QString keyString = textStream.readAll();
-    pubKey.close();
+    //read the public half
+    QString keyString=readKey();
 
     //publish the public half to hastebin
-    hasteBinIt(keyString);
+    publishPubKey(keyString);
 
+    cplusplus_pubKey = keyString;
+    emit pubKeyUpdated(cplusplus_pubKey);
     //outputs the string inside id_rsa.pub, this is the public key
     qDebug() << keyString;
 
 }
 
+QString sshExecuteCmd::readKey(){
+    QFile pubKey("/home/nemo/.ssh/id_rsa.pub");
 
-void sshExecuteCmd::hasteBinIt(QString keyString){
+    pubKey.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream textStream(&pubKey);
+    QString keyString = textStream.readAll();
+    pubKey.close();
+    return keyString;
+}
+
+void sshExecuteCmd::publishPubKey(QString keyString){
 
     QNetworkAccessManager manager;
     QEventLoop q;
@@ -124,6 +131,10 @@ void sshExecuteCmd::hasteBinIt(QString keyString){
         QJsonObject obj = doc.object();
         QJsonValue hastebinKey = obj.value("key");
 
+
+        cplusplus_pubKeyURL = hastebinKey.toString();
+        emit pubKeyURLUpdated(cplusplus_pubKeyURL);
+
         qDebug() <<  "http://hastebin.com/" + hastebinKey.toString();
 
         tT.stop();
@@ -135,5 +146,21 @@ void sshExecuteCmd::hasteBinIt(QString keyString){
         // timeout
 
     }
+
+}
+
+QString sshExecuteCmd::getPubKey(){
+
+    return cplusplus_pubKey;
+
+    emit finished();
+
+}
+
+QString sshExecuteCmd::getPubKeyURL(){
+
+    return "http://hastebin.com/" + cplusplus_pubKeyURL;
+
+    emit finished();
 
 }

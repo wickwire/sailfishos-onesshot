@@ -89,9 +89,9 @@ Page {
                     hostUser=hostUserField.text
 
                     console.log("hostName: " + hostName + "hostPort: " + hostPort + "hostUser: " + hostUser)
-                    //before adding to the sqlite db, check the existence of the public/private key pair and push the public half to the remote server
+                    //before adding to the sqlite db, check the existence of the public/private key pair and publish the public half
                     //sshCmd.pushPubKey(hostName,hostPort,hostUser)
-                    sshCmd.pushPubKey(hostName,hostPort,hostUser)
+                    sshCmd.genKey()
 
                     dbFunction.addHost()
                     var dialog = pageStack.push(addedOK)
@@ -102,10 +102,12 @@ Page {
             Dialog {
 
                 id: addedOK
+                objectName: "hostAdded"
 
                 Text{
                     width: parent.width
-                    text: "Host added Successfully!"
+                    text: "Host added Successfully!\n\n The Public Key should be below - Available also in the pull-down menu.\n\n" + sshCmd.pubKeyURL + "\n\n" + sshCmd.pubKey
+                    wrapMode: Text.Wrap
                     color: "white"
                     y: 100
                     anchors.horizontalCenter: parent.horizontalCenter
@@ -117,7 +119,6 @@ Page {
                 }
             }
         }
-        VerticalScrollDecorator {}
     }
 }
 
