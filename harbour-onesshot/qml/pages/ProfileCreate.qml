@@ -42,6 +42,15 @@ Page {
     property int profileHostId
     property string profileCommand
 
+
+    ListModel{
+        id: hostModel
+
+        Component.onCompleted: {
+            dbFunction.listHosts()
+        }
+    }
+
     SilicaListView {
         id: listView
         model: 1
@@ -80,21 +89,14 @@ Page {
                 menu: ContextMenu {
                     id: contextMenu
 
-                    MenuItem { text: "host1" }
-                    MenuItem { text: "host2" }
-                    MenuItem { text: "host3" }
-                    MenuItem { text: "host4" }
-                    MenuItem { text: "host5" }
-                    MenuItem { text: "host6" }
-                    MenuItem { text: "host7" }
-                    MenuItem { text: "host8" }
-                    MenuItem { text: "host9" }
-                    MenuItem { text: "host10" }
-                    MenuItem { text: "host11" }
-                    MenuItem { text: "host12" }
-                    MenuItem { text: "host13" }
-                    MenuItem { text: "host14" }
-                    MenuItem { text: "host15" }
+                    Repeater {
+
+                    model: hostModel
+
+                    MenuItem { text: name }
+
+                    }
+
                 }
             }
 

@@ -56,7 +56,7 @@ Page {
     }
 
     ListModel{
-        id: profileModel
+        id: hostModel
 
 
         Component.onCompleted: {
@@ -66,7 +66,7 @@ Page {
 
     SilicaListView {
         id: listView
-        model: profileModel
+        model: hostModel
         anchors.fill: parent
         header: PageHeader {
             title: "Delete Hosts"

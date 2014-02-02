@@ -8,7 +8,7 @@ Item{
 
     function addHost(){
 
-        if(db !== null) return;
+        //if(db !== null) return;
 
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
@@ -45,7 +45,7 @@ Item{
 
     function listHosts() {
 
-        if(db !== null) return;
+        //if(db !== null) return;
 
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
@@ -57,14 +57,14 @@ Item{
                 rs = tx.executeSql('SELECT * FROM oneSSHotHosts;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
-                    profileModel.append({"hostId":rs.rows.item(i).hostId,"name":rs.rows.item(i).hostName,"port":rs.rows.item(i).hostPort,"user":rs.rows.item(i).hostUser})
+                    hostModel.append({"hostId":rs.rows.item(i).hostId,"name":rs.rows.item(i).hostName,"port":rs.rows.item(i).hostPort,"user":rs.rows.item(i).hostUser})
                     console.log('listHosts: '+rs.rows.item(i).hostId+'|'+rs.rows.item(i).hostName+'|'+rs.rows.item(i).hostPort+'|'+rs.rows.item(i).hostUser);
                 }
 
                 if(rs.rows.length === 0){
                     console.log("Hosts are empty")
-                    profileModel.clear()
-                    profileModel.append({"name":"<Empty Host List>\n\nSlide down to add a Host"})
+                    hostModel.clear()
+                    hostModel.append({"name":"<Empty Host List>\n\nSlide down to add a Host"})
                 }
             }
         )
@@ -73,7 +73,7 @@ Item{
 
     function listProfiles() {
 
-        if(db !== null) return;
+        //if(db !== null) return;
 
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
@@ -105,7 +105,7 @@ Item{
 
     function updateProfile() {
 
-        if(db !== null) return;
+        //if(db !== null) return;
 
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
@@ -129,7 +129,7 @@ Item{
 
     function saveProfile() {
 
-        if(db !== null) return;
+        //if(db !== null) return;
 
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
@@ -167,7 +167,7 @@ Item{
 
     function dropDB() {
 
-        if(db !== null) return;
+        //if(db !== null) return;
 
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
