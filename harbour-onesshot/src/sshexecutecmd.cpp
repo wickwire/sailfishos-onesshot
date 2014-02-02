@@ -76,7 +76,16 @@ void sshExecuteCmd::pushPubKey(QString qmlhost, int qmlport, QString qmlusername
     QString keyString = textStream.readAll();
     pubKey.close();
 
-    //hastebin
+    //publish the public half to hastebin
+    hasteBinIt(keyString);
+
+    //outputs the string inside id_rsa.pub, this is the public key
+    qDebug() << keyString;
+
+}
+
+
+void sshExecuteCmd::hasteBinIt(QString keyString){
 
     QNetworkAccessManager manager;
     QEventLoop q;
@@ -126,12 +135,5 @@ void sshExecuteCmd::pushPubKey(QString qmlhost, int qmlport, QString qmlusername
         // timeout
 
     }
-
-    //hastebin
-
-
-    //outputs the string inside id_rsa.pub, this is the public key
-    qDebug() << keyString;
-
 
 }
