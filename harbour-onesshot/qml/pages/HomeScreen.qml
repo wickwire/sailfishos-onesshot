@@ -104,10 +104,11 @@ Page {
                     color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
                 onClicked: {
-                    console.log("checking: " + username + host + port + command);
+                    //console.log("checking: " + username + host + port + command);
                     //sshCmd.executeSSH("wickwire", "192.168.55.100", "22", "echo `date +'%Y-%m-%d %H:%M:%S'` > /home/wickwire/cenas.txt")
-                    sshCmd.executeSSH(username, host, port, command)
-                    console.log("Clicked " + name)
+                    dbFunction.getTheMark(hostId)
+                    //sshCmd.executeSSH(username, host, port, command)
+                    //console.log("getTheMark: " + hostUser + "|" + hostName + "|" + hostPort + "|" + profileCommand)
                 }
 
                 onPressAndHold: {

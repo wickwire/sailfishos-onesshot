@@ -6,6 +6,26 @@ Item{
     property var db: null
     property var rs: null
 
+    function getTheMark(hostId){
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+
+                rs = tx.executeSql('SELECT hosts.hostUser, hosts.hostName, hosts.hostPort, profiles.profileCommand FROM oneSSHotHosts hosts, oneSSHotProfiles profiles WHERE profiles.profileHostId = hosts.hostId AND hosts.hostId = ' + hostId + ' group by hosts.hostId;');
+
+                for(var i = 0; i < rs.rows.length; i++) {
+                    console.log("getTheMark: " + rs.rows.item(i).hostUser
+                                + "|" + rs.rows.item(i).hostName
+                                + "|" + rs.rows.item(i).hostPort
+                                + "|" + rs.rows.item(i).profileCommand
+                    )
+                }
+            }
+        )
+    }
+
+
     function addHost(){
 
         //if(db !== null) return;
@@ -178,7 +198,4 @@ Item{
             }
         )
     }
-
-
-
 }

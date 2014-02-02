@@ -107,7 +107,7 @@ Page {
 
                 onClicked: {
                     profileName=profileNameField.text
-                    profileHostId=profileHostField.currentIndex
+                    profileHostId=profileHostField.currentItem.objectName["hostId"]
                     profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 
