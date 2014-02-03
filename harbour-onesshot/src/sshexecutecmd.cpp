@@ -118,7 +118,7 @@ void sshExecuteCmd::publishPubKey(QString keyString){
 
     QNetworkReply *reply = manager.post(request, postData);
 
-    tT.start(1000); // 1s timeout
+    tT.start(2000); // 2s timeout
 
     q.exec();
 

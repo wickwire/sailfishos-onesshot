@@ -40,7 +40,6 @@ Page {
     property string profileName
     property string profileHost
     property int profileHostId
-    property string profileHostId2
     property string profileCommand
 
 
@@ -106,8 +105,11 @@ Page {
                 y: profileHostField.y+profileHostField.height
 
                 onClicked: {
+
+                     var sshHostId = hostModel.get(profileHostField.currentIndex)
+
                     profileName=profileNameField.text
-                    profileHostId=profileHostField.currentItem.text
+                    profileHostId=sshHostId.hostId
                     profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 

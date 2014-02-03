@@ -70,7 +70,6 @@ Page {
 
             TextField {
                 id: profileNameField
-                //placeholderText: "Profile Name"
                 text: activeProfile
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 width: parent.width
@@ -89,7 +88,7 @@ Page {
             ComboBox {
                 id: profileHostField
                 width: parent.width
-                label: "Host"
+                label: activeHost
                 y: profileCommandField.y+profileCommandField.height
                 height: 100
                 currentIndex: activeHostId
@@ -101,11 +100,7 @@ Page {
 
                     model: hostModel
 
-                    MenuItem { text: name
-
-                        Component.onCompleted: profileHostId = hostId;
-
-                    }
+                    MenuItem { text: name }
 
                     }
 
@@ -118,9 +113,12 @@ Page {
                 y: profileHostField.y+profileHostField.height
 
                 onClicked: {
+
+                    var sshHostId = hostModel.get(profileHostField.currentIndex)
+
                     profileId=activeProfileId
                     profileName=profileNameField.text
-                    //profileHostId=profileHostField.currentItem.objectName.
+                    profileHostId=sshHostId.hostId
                     profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 
