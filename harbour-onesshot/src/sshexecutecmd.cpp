@@ -49,7 +49,7 @@ void sshExecuteCmd::genKey(){
 
     //check if a private/public keypair exists.
     //if it doesn't, generate it:
-    //ssh-keygen -t rsa -b 2048 -f /home/nemo/.ssh/id_rsa -N ''
+    //ssh-keygen -t rsa -b 2048 -f $HOME/.ssh/id_rsa -N ''
 
     //to be done at a later stage, if at all
     //push the public key half to the remote server
@@ -57,14 +57,14 @@ void sshExecuteCmd::genKey(){
     //send the public key half to QML for display (dialog/page information)
 
     //find/read public key half
-    QFile pubKey("/home/nemo/.ssh/id_rsa.pub");
+    QFile pubKey("$HOME/.ssh/id_rsa.pub");
     if (!pubKey.open(QIODevice::ReadOnly | QIODevice::Text))
              return;
 
     if(!pubKey.exists())
     {
       qDebug("ssh key pair not found, generating...");
-      proc->start("ssh-keygen -t rsa -b 2048 -f /home/nemo/.ssh/id_rsa");
+      proc->start("ssh-keygen -t rsa -b 2048 -f $HOME/.ssh/id_rsa");
       qDebug("ssh key pair generated successfully!");
     }
 
@@ -82,7 +82,7 @@ void sshExecuteCmd::genKey(){
 }
 
 QString sshExecuteCmd::readKey(){
-    QFile pubKey("/home/nemo/.ssh/id_rsa.pub");
+    QFile pubKey("$HOME/.ssh/id_rsa.pub");
 
     pubKey.open(QIODevice::ReadOnly | QIODevice::Text);
 
