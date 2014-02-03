@@ -40,6 +40,7 @@ Page {
     property string profileName
     property string profileHost
     property int profileHostId
+    property string profileHostId2
     property string profileCommand
 
 
@@ -96,7 +97,6 @@ Page {
                     MenuItem { text: name }
 
                     }
-
                 }
             }
 
@@ -107,7 +107,7 @@ Page {
 
                 onClicked: {
                     profileName=profileNameField.text
-                    profileHostId=profileHostField.currentItem.objectName["hostId"]
+                    profileHostId=profileHostField.currentItem.text
                     profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 
