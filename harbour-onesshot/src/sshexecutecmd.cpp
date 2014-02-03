@@ -57,9 +57,8 @@ void sshExecuteCmd::genKey(){
     //send the public key half to QML for display (dialog/page information)
 
     //find/read public key half
-    QFile pubKey("$HOME/.ssh/id_rsa.pub");
-    if (!pubKey.open(QIODevice::ReadOnly | QIODevice::Text))
-             return;
+    QFile pubKey(".ssh/id_rsa.pub");
+    pubKey.open(QIODevice::ReadOnly | QIODevice::Text);
 
     if(!pubKey.exists())
     {
@@ -68,6 +67,7 @@ void sshExecuteCmd::genKey(){
       qDebug("ssh key pair generated successfully!");
     }
 
+    qDebug("ssh key pair reading...");
     //read the public half
     QString keyString=readKey();
 
@@ -82,7 +82,7 @@ void sshExecuteCmd::genKey(){
 }
 
 QString sshExecuteCmd::readKey(){
-    QFile pubKey("$HOME/.ssh/id_rsa.pub");
+    QFile pubKey(".ssh/id_rsa.pub");
 
     pubKey.open(QIODevice::ReadOnly | QIODevice::Text);
 
