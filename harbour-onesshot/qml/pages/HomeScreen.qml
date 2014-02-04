@@ -34,6 +34,11 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
+    property string sshUser
+    property string sshHost
+    property int sshPort
+    property string sshCommand
+
     DBFunctions{ id: dbFunction }
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
@@ -107,6 +112,7 @@ Page {
                     //console.log("checking: " + username + host + port + command);
                     //sshCmd.executeSSH("wickwire", "192.168.55.100", "22", "echo `date +'%Y-%m-%d %H:%M:%S'` > /home/wickwire/cenas.txt")
                     dbFunction.getTheMark(hostId)
+                    sshCmd.executeSSH(sshUser,sshHost,sshPort,sshCommand)
                     //sshCmd.executeSSH(username, host, port, command)
                     //console.log("getTheMark: " + hostUser + "|" + hostName + "|" + hostPort + "|" + profileCommand)
                 }

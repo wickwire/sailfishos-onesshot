@@ -93,7 +93,7 @@ Page {
                     //sshCmd.pushPubKey(hostName,hostPort,hostUser)
                     sshCmd.genKey()
 
-                    dbFunction.addHost()
+                    dbFunction.addHost(hostName)
                     var dialog = pageStack.push(addedOK)
                 }
             }
@@ -106,7 +106,7 @@ Page {
 
                 Text{
                     width: parent.width
-                    text: "Host added Successfully!\n\n The Public Key should be below - Available also in the pull-down menu.\n\n" + sshCmd.pubKeyURL + "\n\n" + sshCmd.pubKey
+                    text: "Host added Successfully!\n\n Your Public Key is available in the pull-down menu. Add it to this host authorized_keys file.\n\n"
                     wrapMode: Text.Wrap
                     color: "white"
                     y: 100

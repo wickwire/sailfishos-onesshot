@@ -21,6 +21,11 @@ Item{
                                 + "|" + rs.rows.item(i).profileCommand
                     )
                 }
+
+                sshUser=rs.rows.item(0).hostUser
+                sshHost=rs.rows.item(0).hostName
+                sshPort=rs.rows.item(0).hostPort
+                sshCommand=rs.rows.item(0).profileCommand
             }
         )
     }
