@@ -12,11 +12,12 @@ Item{
         db.transaction(
             function(tx) {
 
-                rs = tx.executeSql('SELECT hosts.hostUser, hosts.hostName, hosts.hostPort, profiles.profileCommand FROM oneSSHotHosts hosts, oneSSHotProfiles profiles WHERE profiles.profileHostId = hosts.hostId AND hosts.hostId = ' + hostId + ' group by hosts.hostId;');
+                rs = tx.executeSql('SELECT hosts.hostUser, hosts.hostName, hosts.hostAddress, hosts.hostPort, profiles.profileCommand FROM oneSSHotHosts hosts, oneSSHotProfiles profiles WHERE profiles.profileHostId = hosts.hostId AND hosts.hostId = ' + hostId + ' group by hosts.hostId;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
                     console.log("getTheMark: " + rs.rows.item(i).hostUser
                                 + "|" + rs.rows.item(i).hostName
+                                + "|" + rs.rows.item(i).hostAddress
                                 + "|" + rs.rows.item(i).hostPort
                                 + "|" + rs.rows.item(i).profileCommand
                     )
@@ -24,6 +25,7 @@ Item{
 
                 sshUser=rs.rows.item(0).hostUser
                 sshHost=rs.rows.item(0).hostName
+                sshAddress=rs.rows.item(0).hostAddress
                 sshPort=rs.rows.item(0).hostPort
                 sshCommand=rs.rows.item(0).profileCommand
             }
@@ -41,13 +43,14 @@ Item{
             function(tx) {
 
                 // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHotHosts (hostName, hostPort, hostUser) VALUES(?, ?, ?);', [hostName, hostPort, hostUser]);
+                tx.executeSql('INSERT INTO oneSSHotHosts (hostName, hostAddress, hostPort, hostUser) VALUES(?, ?, ?, ?);', [hostName, hostAddress, hostPort, hostUser]);
 
                 rs = tx.executeSql('SELECT * FROM oneSSHotHosts;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
                     console.log("addHost: " + rs.rows.item(i).hostId
                                 + "|" + rs.rows.item(i).hostName
+                                + "|" + rs.rows.item(i).hostAddress
                                 + "|" + rs.rows.item(i).hostPort
                                 + "|" + rs.rows.item(i).hostUser
                     )
@@ -82,8 +85,8 @@ Item{
                 rs = tx.executeSql('SELECT * FROM oneSSHotHosts;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
-                    hostModel.append({"hostId":rs.rows.item(i).hostId,"name":rs.rows.item(i).hostName,"port":rs.rows.item(i).hostPort,"user":rs.rows.item(i).hostUser})
-                    console.log('listHosts: '+rs.rows.item(i).hostId+'|'+rs.rows.item(i).hostName+'|'+rs.rows.item(i).hostPort+'|'+rs.rows.item(i).hostUser);
+                    hostModel.append({"hostId":rs.rows.item(i).hostId,"name":rs.rows.item(i).hostName,"address":rs.rows.item(i).hostAddress,"port":rs.rows.item(i).hostPort,"user":rs.rows.item(i).hostUser})
+                    console.log('listHosts: '+rs.rows.item(i).hostId+'|'+rs.rows.item(i).hostName+'|'+rs.rows.item(i).hostAddress+'|'+rs.rows.item(i).hostPort+'|'+rs.rows.item(i).hostUser);
                 }
 
                 if(rs.rows.length === 0){
@@ -106,16 +109,16 @@ Item{
             function(tx) {
 
                 // Create the database if it doesn't already exist
-                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles(profileId INTEGER PRIMARY KEY AUTOINCREMENT, profileName TEXT, profileHostId INT, profileHost TEXT, profileCommand TEXT);');
-                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts(hostId INTEGER PRIMARY KEY AUTOINCREMENT, hostName TEXT, hostPort INT, hostUser TEXT);');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles(profileId INTEGER PRIMARY KEY AUTOINCREMENT, profileName TEXT, profileHostId INT, profileCommand TEXT);');
+                tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts(hostId INTEGER PRIMARY KEY AUTOINCREMENT, hostName TEXT, hostAddress TEXT, hostPort INT, hostUser TEXT);');
 
                 // Show all added profiles
 
                 rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
                 for(var i = 0; i < rs.rows.length; i++) {
-                    profileModel.append({"profileId":rs.rows.item(i).profileId,"name":rs.rows.item(i).profileName,"hostId":rs.rows.item(i).profileHostId,"host":rs.rows.item(i).profileHost,"command":rs.rows.item(i).profileCommand})
-                    console.log('listProfiles: '+rs.rows.item(i).profileId+'|'+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHostId+'|'+rs.rows.item(i).profileHost+'|'+rs.rows.item(i).profileCommand);
+                    profileModel.append({"profileId":rs.rows.item(i).profileId,"name":rs.rows.item(i).profileName,"hostId":rs.rows.item(i).profileHostId,"command":rs.rows.item(i).profileCommand})
+                    console.log('listProfiles: '+rs.rows.item(i).profileId+'|'+rs.rows.item(i).profileName+'|'+rs.rows.item(i).profileHostId+'|'+rs.rows.item(i).profileCommand);
                 }
 
                 if(rs.rows.length === 0){
@@ -136,7 +139,7 @@ Item{
 
         db.transaction(
             function(tx) {
-                tx.executeSql('UPDATE oneSSHotProfiles SET profileName="' + profileName + '", profileHostId=' + profileHostId + ', profileHost="' + profileHost + '", profileCommand="' + profileCommand + '" WHERE profileId="' + activeProfileId + '";');
+                tx.executeSql('UPDATE oneSSHotProfiles SET profileName="' + profileName + '", profileHostId=' + profileHostId + ', profileCommand="' + profileCommand + '" WHERE profileId="' + activeProfileId + '";');
 
                 rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
@@ -144,7 +147,6 @@ Item{
                     console.log("updateProfile: " + rs.rows.item(i).profileId
                                 + "|" + rs.rows.item(i).profileName
                                 + "|" + rs.rows.item(i).profileHostId
-                                + "|" + rs.rows.item(i).profileHost
                                 + "|" + rs.rows.item(i).profileCommand
                     )
                 }
@@ -162,7 +164,7 @@ Item{
             function(tx) {
 
                 // Add (another) profile row
-                tx.executeSql('INSERT INTO oneSSHotProfiles (profileName, profileHostId, profileHost, profileCommand) VALUES(?, ?, ?, ?);', [profileName, profileHostId, profileHost, profileCommand]);
+                tx.executeSql('INSERT INTO oneSSHotProfiles (profileName, profileHostId, profileCommand) VALUES(?, ?, ?);', [profileName, profileHostId, profileCommand]);
 
                 rs = tx.executeSql('SELECT * FROM oneSSHotProfiles;');
 
@@ -170,7 +172,6 @@ Item{
                     console.log("saveProfile: " + rs.rows.item(i).profileId
                                 + "|" + rs.rows.item(i).profileName
                                 + "|" + rs.rows.item(i).profileHostId
-                                + "|" + rs.rows.item(i).profileHost
                                 + "|" + rs.rows.item(i).profileCommand
                     )
                 }

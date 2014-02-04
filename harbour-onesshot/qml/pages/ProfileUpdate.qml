@@ -39,12 +39,10 @@ Page {
     property int profileId
     property string profileName
     property int profileHostId
-    property string profileHost
     property string profileCommand
 
     property int activeProfileId
     property string activeProfile
-    property string activeHost
     property int activeHostId
     property string activeCommand
 
@@ -88,10 +86,10 @@ Page {
             ComboBox {
                 id: profileHostField
                 width: parent.width
-                label: activeHost
+                label: "Host"
                 y: profileCommandField.y+profileCommandField.height
                 height: 100
-                currentIndex: activeHostId
+                //currentIndex: activeHostId
 
                 menu: ContextMenu {
                     id: contextMenu
@@ -119,12 +117,11 @@ Page {
                     profileId=activeProfileId
                     profileName=profileNameField.text
                     profileHostId=sshHostId.hostId
-                    profileHost=profileHostField.currentItem.text
                     profileCommand=profileCommandField.text
 
                     console.log("ProfileUpdate - activeProfile: " + activeProfile)
 
-                    console.log("ProfileUpdate - activeID: " + profileId + "profileName: " + profileName + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
+                    console.log("ProfileUpdate - activeID: " + profileId + "profileName: " + profileName + "profileHostId: " + profileHostId + "profileCommand: " + profileCommand)
 
                     dbFunction.updateProfile()
 

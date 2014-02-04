@@ -36,6 +36,7 @@ Page {
 
     property string sshUser
     property string sshHost
+    property string sshAddress
     property int sshPort
     property string sshCommand
 
@@ -109,22 +110,17 @@ Page {
                     color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
                 onClicked: {
-                    //console.log("checking: " + username + host + port + command);
-                    //sshCmd.executeSSH("wickwire", "192.168.55.100", "22", "echo `date +'%Y-%m-%d %H:%M:%S'` > /home/wickwire/cenas.txt")
-                    dbFunction.getTheMark(hostId)
-                    sshCmd.executeSSH(sshUser,sshHost,sshPort,sshCommand)
-                    //sshCmd.executeSSH(username, host, port, command)
-                    //console.log("getTheMark: " + hostUser + "|" + hostName + "|" + hostPort + "|" + profileCommand)
+                     dbFunction.getTheMark(hostId)
+                    sshCmd.executeSSH(sshUser,sshAddress,sshPort,sshCommand)
                 }
 
                 onPressAndHold: {
-                    console.log("HomeScreen Long Press: " + profileId + "|" + name + "|" + hostId + "|" + host + "|" + command);
+                    console.log("HomeScreen Long Press: " + profileId + "|" + name + "|" + hostId + "|" + command);
 
                     var selectedProfile = {
                         "activeProfileId" : profileId,
                         "activeProfile" : name,
                         "activeHostId" : hostId,
-                        "activeHost" : host,
                         "activeCommand" : command
                     };
                     pageStack.push("ProfileUpdate.qml",selectedProfile)

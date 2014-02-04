@@ -39,6 +39,7 @@ Page {
 
     property int hostId
     property string hostName
+    property string hostAddress
     property int hostPort
     property string hostUser
 
@@ -54,10 +55,19 @@ Page {
 
             TextField {
                 id: hostNameField
-                placeholderText: "Host"
+                placeholderText: "Host Name"
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 width: parent.width
                 height: 100
+            }
+
+            TextField {
+                id: hostAddressField
+                placeholderText: "Address"
+                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
+                width: parent.width
+                height: 100
+                y: hostNameField.y+hostNameField.height
             }
 
             TextField {
@@ -66,7 +76,7 @@ Page {
                 color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 width: parent.width
                 height: 100
-                y: hostNameField.y+hostNameField.height
+                y: hostAddressField.y+hostAddressField.height
             }
 
             TextField {
@@ -85,15 +95,15 @@ Page {
 
                 onClicked: {
                     hostName=hostNameField.text
+                    hostAddress=hostAddressField.text
                     hostPort=hostPortField.text
                     hostUser=hostUserField.text
 
-                    console.log("hostName: " + hostName + "hostPort: " + hostPort + "hostUser: " + hostUser)
-                    //before adding to the sqlite db, check the existence of the public/private key pair and publish the public half
-                    //sshCmd.pushPubKey(hostName,hostPort,hostUser)
+                    console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
+
                     sshCmd.genKey()
 
-                    dbFunction.addHost(hostName)
+                    dbFunction.addHost(hostAddress)
                     var dialog = pageStack.push(addedOK)
                 }
             }

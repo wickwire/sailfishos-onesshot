@@ -89,7 +89,8 @@ Page {
         Button{
             id: profileDel
             text: "Delete"
-            y: 600
+            anchors.right: parent.right
+            anchors.bottom: parent.bottom
 
             onClicked: {
                 dbFunction.deleteHosts()

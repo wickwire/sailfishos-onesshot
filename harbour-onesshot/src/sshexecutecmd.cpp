@@ -21,18 +21,18 @@ sshExecuteCmd::sshExecuteCmd(QObject *parent) :
 {
 }
 
-void sshExecuteCmd::executeSSH(QString qmlusername, QString qmlhost, QString qmlport, QString qmlcommand){
+void sshExecuteCmd::executeSSH(QString qmlusername, QString qmladdress, QString qmlport, QString qmlcommand){
 
-    QString qthost, qtport, qtusername, qtcommand;
+    QString qtaddress, qtport, qtusername, qtcommand;
     QProcess *proc = new QProcess();
 
-    qthost=qmlhost;
+    qtaddress=qmladdress;
     qtport=qmlport;
     qtusername=qmlusername;
     qtcommand=qmlcommand;
 
-    qDebug()<< "ssh " + qtusername + "@" + qthost + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand;
-    proc->start("ssh " + qtusername + "@" + qthost + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand);
+    qDebug()<< "ssh " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand;
+    proc->start("ssh " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand);
 }
 
 void sshExecuteCmd::genKey(){
