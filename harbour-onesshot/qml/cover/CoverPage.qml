@@ -32,23 +32,111 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 CoverBackground {
-    Label {
-        id: label
-        anchors.centerIn: parent
-        text: "My Cover"
-    }
 
-    CoverActionList {
-        id: coverAction
+         Image {
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-next"
-        }
+             id: logo
+             source: "/usr/share/icons/hicolor/86x86/apps/harbour-onesshot.png"
+             anchors.centerIn: parent
 
-        CoverAction {
-            iconSource: "image://theme/icon-cover-pause"
-        }
-    }
+//             RotationAnimation on rotation {
+//                 running: active
+//                 duration: 1000
+//                 loops: Animation.Infinite
+//                 from: 0
+//                 to: 360
+//             }
+
+
+        SequentialAnimation{
+            running: true
+            loops: Animation.Infinite
+
+            NumberAnimation{
+                target:logo
+                property: "opacity"
+                duration: 1
+                from: 0
+                to: 1
+            }
+
+            //inbetween
+
+
+            NumberAnimation{
+                target:logo
+                property: "rotation"
+                duration: 100
+                from: 0
+                to: 360
+                loops: 10
+            }
+
+            NumberAnimation{
+                target:logo
+                property: "rotation"
+                duration: 200
+                from: 0
+                to: 360
+                loops: 8
+            }
+
+            NumberAnimation{
+                target:logo
+                property: "rotation"
+                duration: 500
+                from: 0
+                to: 360
+                loops:5
+            }
+
+            NumberAnimation{
+                target:logo
+                property: "rotation"
+                duration: 750
+                from: 0
+                to: 360
+                loops:3
+            }
+
+            NumberAnimation{
+                target:logo
+                property: "rotation"
+                duration: 1000
+                from: 0
+                to: 360
+                loops:1
+            }
+
+            NumberAnimation {
+                target:logo
+                property: "scale"
+                duration: 1500
+                from: 1
+                to: 30
+            }
+            //inbetween
+
+             NumberAnimation {
+                 target:logo
+                 property: "scale"
+                 duration: 3000
+                 from: 30
+                 to: 1
+             }
+
+             NumberAnimation {
+                target:logo
+                property: "opacity"
+                duration: 1000
+                from: 1
+                to: 0
+             }
+
+          }
+
+         }
+
 }
 
 

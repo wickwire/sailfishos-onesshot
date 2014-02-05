@@ -1,0 +1,8 @@
+%dir /usr/lib/debug
+%dir /usr/lib/debug/usr
+%dir /usr/lib/debug/usr/bin
+%dir /usr/lib/debug/.build-id
+%dir /usr/lib/debug/.build-id/bf
+/usr/lib/debug/usr/bin/harbour-onesshot.debug
+/usr/lib/debug/.build-id/bf/da7e29a9683df9bd71952ccf0cf745495665a9.debug
+/usr/lib/debug/.build-id/bf/da7e29a9683df9bd71952ccf0cf745495665a9

@@ -49,12 +49,14 @@ Page {
                 width: parent.width
                 wrapMode: Text.WordWrap
                 text: "
-* oneSSHot works by automating commands over SSH to remote (either LAN or internet accessible) systems. It is then up to the remote system to act accordingly to the received command.\n\n
-* This app came out of the necessity to quickly issue shutdown commands to several systems throughout the house.\n\n
-* It can be used to do a lot more than that, since any command can be sent to remote system.\n\n
-* The authentication method used is by generating public/private ssh key pairs and publishing the public key to the remote system.\n\n
-* This app was first intended for Android (1.6 at the time) but a few weeks prior to market publishing, I found out that another developer had already submitted a similar app called Lazier Geek.\n\n
-* Since I couldn't find a match in the Jolla Store, I thought I'd resume my old project and improve upon it!\n\n\n
+* oneSSHot works by automating commands over SSH to remote (either LAN or internet accessible) systems.\n\n
+* To start working with oneSSHot, do as follows:\n\n
+** Add a Host. If no Public/Private Key Pairs exist on your device, they will be generated in the nemo homedir\n
+** Get the Public Key from oneSSHot and configure it on the authorized_keys file at the remote server\n
+** Add a Profile and associate it with an existing Host\n
+** Tap a Profile to fire its command to the designated host\n\n\n
+* This app served as an experiment with the SailfishOS platform, it is fully functional but bugs may pop up now and then.\n\n
+* It is serving me well in shutting down headless servers, but the possibilities are endless!\n\n\n
 "
             }
         }

@@ -75,7 +75,7 @@ Page {
                 }
             }
             MenuItem {
-                text: "About"
+                text: "Help/About"
                 onClicked: pageStack.push("AboutPage.qml")
             }
         }
@@ -112,6 +112,10 @@ Page {
                 onClicked: {
                      dbFunction.getTheMark(hostId)
                     sshCmd.executeSSH(sshUser,sshAddress,sshPort,sshCommand)
+
+                    var dialog = pageStack.push(sshot)
+
+
                 }
 
                 onPressAndHold: {
@@ -126,6 +130,26 @@ Page {
                     pageStack.push("ProfileUpdate.qml",selectedProfile)
                 }
             }
+
+            Dialog {
+
+                id: sshot
+
+                Text{
+                    width: parent.width
+                    text: "SSHot fired successfully!"
+                    color: "white"
+                    y: 100
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                onClicked: {
+                    pageStack.clear()
+                    pageStack.push("HomeScreen.qml")
+                }
+            }
+
+
             VerticalScrollDecorator {}
         }
     }
