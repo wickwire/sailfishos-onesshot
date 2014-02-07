@@ -48,10 +48,7 @@ Page {
 
         // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
-            MenuItem {
-                text: "SSH Public Key"
-                onClicked: pageStack.push("GetSSHKey.qml")
-            }
+
             MenuItem {
                 text: "Add New Host"
                 onClicked: pageStack.push("HostCreate.qml")
@@ -59,6 +56,12 @@ Page {
             MenuItem {
                 text: "Delete Hosts"
                 onClicked: pageStack.push("HostDelete.qml")
+            }
+            MenuItem {
+                text: "Clear DB"
+                onClicked: {
+                    var dialog = pageStack.push("DropDB.qml")
+                }
             }
             MenuItem {
                 text: "Add New Profile"
@@ -69,10 +72,8 @@ Page {
                 onClicked: pageStack.push("ProfileDelete.qml")
             }
             MenuItem {
-                text: "Clear DB"
-                onClicked: {
-                    var dialog = pageStack.push("DropDB.qml")
-                }
+                text: "SSH Public Key"
+                onClicked: pageStack.push("GetSSHKey.qml")
             }
             MenuItem {
                 text: "Help/About"

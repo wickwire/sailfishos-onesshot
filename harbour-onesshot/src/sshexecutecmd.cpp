@@ -15,6 +15,10 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 
+#include <QCoreApplication>
+#include <QStandardPaths>
+#include <QDir>
+
 
 sshExecuteCmd::sshExecuteCmd(QObject *parent) :
     QObject(parent)
@@ -25,54 +29,57 @@ void sshExecuteCmd::executeSSH(QString qmlusername, QString qmladdress, QString 
 
     QString qtaddress, qtport, qtusername, qtcommand;
     QProcess *proc = new QProcess();
+    data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 
     qtaddress=qmladdress;
     qtport=qmlport;
     qtusername=qmlusername;
     qtcommand=qmlcommand;
 
+    QStringList sshArgs;
+
+    sshArgs.append("onesshot");
+
     qDebug()<< "ssh " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand;
-    proc->start("ssh " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand);
+    //proc->start("ssh -i /home/nemo/.local/share/harbour-onesshot/harbour-onesshot/id_rsa nunofaria@192.168.1.15 -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/nemo/.local/share/harbour-onesshot/harbour-onesshot/known_hosts echo 'SailfishOS: '`date` > /tmp/sailfishOS.tmp");
+
+    proc->start("ssh -i " + data_dir + "/id_rsa " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no -o UserKnownHostsFile=" + data_dir + "/known_hosts " + qtcommand,sshArgs);
+
 }
 
 void sshExecuteCmd::genKey(){
 
+    //QString config_dir = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)).filePath(QCoreApplication::applicationName());
+    //QString data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    //QString cache_dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    //qDebug() << "env_dirs: " + config_dir + " " + data_dir + " " + cache_dir;
+
+    data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
     QProcess *proc = new QProcess();
+    QProcess *procClean = new QProcess();
+
+    qDebug() << "data_dir:::: " + data_dir;
 
     //find/read public key half
-    QString homeDir = "/home/nemo";
-    QFile pubKey(homeDir+"/.ssh/id_rsa.pub");
+    QFile pubKey(data_dir + "/id_rsa.pub");
 
-       //if (!pubKey.open(QIODevice::ReadOnly | QIODevice::Text))
-       //    return;
-
-    if(!pubKey.exists())
-    {
-      qDebug("ssh key pair not found, generating...");
-      proc->start("ssh-keygen -t rsa -b 2048 -f "+homeDir+"/.ssh/id_rsa");
-      proc->waitForFinished();
-      qDebug("ssh key pair generated successfully!");
+    if (!pubKey.exists()){
+           qDebug()<<"ssh key pair not found, generating... " + data_dir;
+           procClean->start("killall ssh-keygen");
+           procClean->waitForFinished();
+           proc->start("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
+           proc->waitForFinished();
+           qDebug()<<"ssh key pair generated successfully! " + data_dir;
     }
-
-    /*
-    qDebug("ssh key pair reading...");
-    //read the public half
-    QString keyString=readKey();
-
-    //publish the public half to hastebin
-    publishPubKey(keyString);
-
-    cplusplus_pubKey = keyString;
-    emit pubKeyUpdated(cplusplus_pubKey);
-    //outputs the string inside id_rsa.pub, this is the public key
-    qDebug() << keyString;
-    */
 
 }
 
 QString sshExecuteCmd::readKey(){
-    QString homeDir = "/home/nemo";
-    QFile pubKey(homeDir+"/.ssh/id_rsa.pub");
+
+    data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    QFile pubKey(data_dir + "/id_rsa.pub");
 
     pubKey.open(QIODevice::ReadOnly | QIODevice::Text);
 
@@ -154,3 +161,5 @@ QString sshExecuteCmd::getPubKeyURL(){
     emit finished();
 
 }
+
+

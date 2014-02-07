@@ -16,6 +16,7 @@ public:
     QString cplusplus_pubKeyURL;
     QString getPubKey();
     QString getPubKeyURL();
+    QString data_dir;
 
 signals:
     QVariant pubKeyUpdated(QVariant sshkey);
@@ -28,7 +29,6 @@ public slots:
     void genKey();
     QString readKey();
     void publishPubKey(QString keyString);
-
 };
 
 #endif // SSHEXECUTECMD_H

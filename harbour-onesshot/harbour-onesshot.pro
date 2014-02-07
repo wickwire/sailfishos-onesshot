@@ -27,7 +27,8 @@ OTHER_FILES += qml/oneSSHot.qml \
     qml/pages/HostCreate.qml \
     qml/pages/HostDelete.qml \
     qml/pages/DBFunctions.qml \
-    qml/pages/GetSSHKey.qml
+    qml/pages/GetSSHKey.qml \
+    harbour-onesshot.png
 
 HEADERS += \
     src/sshexecutecmd.h

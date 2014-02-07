@@ -43,6 +43,12 @@ Page {
     property int hostPort
     property string hostUser
 
+    BusyIndicator {
+        id: genKeySpinner
+        anchors.centerIn: parent
+        size: BusyIndicatorSize.Large
+    }
+
     SilicaListView {
         id: listView
         model: 1
@@ -94,6 +100,9 @@ Page {
                 y: hostUserField.y+hostUserField.height
 
                 onClicked: {
+
+                    genKeySpinner.running=true
+
                     hostName=hostNameField.text
                     hostAddress=hostAddressField.text
                     hostPort=hostPortField.text
@@ -104,10 +113,10 @@ Page {
                     sshCmd.genKey()
 
                     dbFunction.addHost(hostAddress)
+                    genKeySpinner.running=false
                     var dialog = pageStack.push(addedOK)
                 }
             }
-
 
             Dialog {
 
