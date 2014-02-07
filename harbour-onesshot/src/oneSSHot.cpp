@@ -41,6 +41,8 @@
 #include <QQmlContext>
 #include <QQmlComponent>
 
+#include <QThread>
+
 int main(int argc, char *argv[])
 {
     // For this example, wizard-generates single line code would be good enough,
@@ -54,7 +56,22 @@ int main(int argc, char *argv[])
 
     sshExecuteCmd *sshCmd = new sshExecuteCmd();
 
-    //sshCmd->executeSSH();
+    sshExecuteCmd *sshGenKey = new sshExecuteCmd();
+
+    QThread* thread = new QThread;
+
+    sshGenKey->moveToThread(thread);
+
+    QObject::connect(thread, SIGNAL(started()), sshGenKey, SLOT(genKey()),Qt::QueuedConnection);
+
+
+    //qDebug() << QGuiApplication::instance()->thread();
+    qDebug("Main Thread ID: %d",(int)QGuiApplication::instance()->thread());
+
+    //thread->start();
+
+    view->rootContext()->setContextProperty("sshGenKey", thread);
+
 
     view->rootContext()->setContextProperty("sshCmd", sshCmd);
 

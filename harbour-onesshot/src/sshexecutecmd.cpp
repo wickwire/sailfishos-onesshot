@@ -19,6 +19,9 @@
 #include <QStandardPaths>
 #include <QDir>
 
+#include <QThread>
+
+
 
 sshExecuteCmd::sshExecuteCmd(QObject *parent) :
     QObject(parent)
@@ -54,6 +57,8 @@ void sshExecuteCmd::genKey(){
     //QString cache_dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     //qDebug() << "env_dirs: " + config_dir + " " + data_dir + " " + cache_dir;
 
+    qDebug("Thread ID @genKey: %d",(int)QThread::currentThreadId());
+
     data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 
     QProcess *proc = new QProcess();
@@ -68,7 +73,7 @@ void sshExecuteCmd::genKey(){
            qDebug()<<"ssh key pair not found, generating... " + data_dir;
            procClean->start("killall ssh-keygen");
            procClean->waitForFinished();
-           proc->start("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
+           proc->start("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa -N=");
            proc->waitForFinished();
            qDebug()<<"ssh key pair generated successfully! " + data_dir;
     }

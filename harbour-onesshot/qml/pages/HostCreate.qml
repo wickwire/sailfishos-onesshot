@@ -110,11 +110,12 @@ Page {
 
                     console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
 
-                    sshCmd.genKey()
+                    sshGenKey.start()
 
-                    dbFunction.addHost(hostAddress)
-                    genKeySpinner.running=false
-                    var dialog = pageStack.push(addedOK)
+                    //C++ signal must be here
+                    //dbFunction.addHost(hostAddress)
+                    //genKeySpinner.running=false
+                    //var dialog = pageStack.push(addedOK)
                 }
             }
 
