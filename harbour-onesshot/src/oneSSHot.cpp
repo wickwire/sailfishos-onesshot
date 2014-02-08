@@ -60,8 +60,6 @@ int main(int argc, char *argv[])
 
     QThread* thread = new QThread;
 
-    QString* spinnerState = new QString;
-
     sshGenKey->moveToThread(thread);
 
     QObject::connect(thread, SIGNAL(started()), sshGenKey, SLOT(genKey()),Qt::QueuedConnection);
@@ -70,10 +68,7 @@ int main(int argc, char *argv[])
     //qDebug() << QGuiApplication::instance()->thread();
     qDebug("Main Thread ID: %d",(int)QGuiApplication::instance()->thread());
 
-    //thread->start();
-
     view->rootContext()->setContextProperty("sshGenKey", thread);
-
 
     view->rootContext()->setContextProperty("sshCmd", sshCmd);
 
@@ -81,7 +76,9 @@ int main(int argc, char *argv[])
 
     view->show();
 
-    QObject::connect(sshGenKey, SIGNAL(spinnerStateUpdated(QVariant)), sshGenKey, SLOT(cenas()));
+    QObject::connect(sshGenKey, SIGNAL(spinnerStateUpdated(QVariant)), sshGenKey, SLOT(emitSpinnerState()));
+
+    qDebug()<<"sshCmd->cplusplus_spinnerState: ";
 
     return app->exec();
 }

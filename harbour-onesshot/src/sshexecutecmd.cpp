@@ -57,6 +57,9 @@ void sshExecuteCmd::genKey(){
     //QString cache_dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     //qDebug() << "env_dirs: " + config_dir + " " + data_dir + " " + cache_dir;
 
+    //setSpinnerState(true);
+
+
     qDebug("Thread ID @genKey: %d",(int)QThread::currentThreadId());
 
     data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
@@ -77,7 +80,7 @@ void sshExecuteCmd::genKey(){
            proc->waitForFinished();
            qDebug()<<"ssh key pair generated successfully! " + data_dir;
 
-           cplusplus_spinnerState="stopIt";
+           cplusplus_spinnerState=false;
 
            emit spinnerStateUpdated(cplusplus_spinnerState);
     }
@@ -171,11 +174,7 @@ QString sshExecuteCmd::getPubKeyURL(){
 
 }
 
-
-QString sshExecuteCmd::getSpinnerState(){
-
-
-    qDebug()<<"FUNCIONOU";
+bool sshExecuteCmd::getSpinnerState(){
 
     return cplusplus_spinnerState;
 
@@ -183,9 +182,20 @@ QString sshExecuteCmd::getSpinnerState(){
 
 }
 
-void sshExecuteCmd::cenas(){
+void sshExecuteCmd::setSpinnerState(bool){
 
+    cplusplus_spinnerState=true;
+
+}
+
+
+void sshExecuteCmd::emitSpinnerState(){
 
     qDebug()<<"FUNCIONOU";
 
+    setSpinnerState(false);
+
+    emit finished();
+
 }
+

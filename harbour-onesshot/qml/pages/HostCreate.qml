@@ -43,11 +43,15 @@ Page {
     property int hostPort
     property string hostUser
 
+    Component.onCompleted: {
+        console.log("sshGenKey.spinnerState: " + sshGenKey.spinnerState)
+    }
+
     BusyIndicator {
         id: genKeySpinner
         anchors.centerIn: parent
         size: BusyIndicatorSize.Large
-        //onSpinnerStateUpdated: genKeySpinner.running=false
+        running: sshGenKey.spinnerState
     }
 
     SilicaListView {
@@ -111,7 +115,11 @@ Page {
 
                     console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
 
+                    console.log("sshGenKey.spinnerState before: "+sshGenKey.cplusplus_spinnerState)
+
                     sshGenKey.start()
+
+                    console.log("sshGenKey.spinnerState after: "+sshGenKey.cplusplus_spinnerState)
 
                     //C++ signal must be here
                     //dbFunction.addHost(hostAddress)

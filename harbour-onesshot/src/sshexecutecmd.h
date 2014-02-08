@@ -8,18 +8,19 @@ class sshExecuteCmd : public QObject
 {
     Q_PROPERTY(QString pubKey READ getPubKey NOTIFY pubKeyUpdated)
     Q_PROPERTY(QString pubKeyURL READ getPubKeyURL NOTIFY pubKeyURLUpdated)
-    Q_PROPERTY(QString spinnerState READ getSpinnerState NOTIFY spinnerStateUpdated)
+    Q_PROPERTY(bool spinnerState READ getSpinnerState WRITE setSpinnerState NOTIFY spinnerStateUpdated)
 
     Q_OBJECT
 public:
     explicit sshExecuteCmd(QObject *parent = 0);
     QString cplusplus_pubKey;
     QString cplusplus_pubKeyURL;
-    QString cplusplus_spinnerState;
+    bool cplusplus_spinnerState;
     QString getPubKey();
     QString getPubKeyURL();
-    QString getSpinnerState();
+    bool getSpinnerState();
     QString data_dir;
+    void setSpinnerState(bool);
 
 signals:
     QVariant pubKeyUpdated(QVariant sshkey);
@@ -33,7 +34,7 @@ public slots:
     void genKey();
     QString readKey();
     void publishPubKey(QString keyString);
-    void cenas();
+    void emitSpinnerState();
 };
 
 #endif // SSHEXECUTECMD_H
