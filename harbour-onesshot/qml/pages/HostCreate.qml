@@ -47,6 +47,7 @@ Page {
         id: genKeySpinner
         anchors.centerIn: parent
         size: BusyIndicatorSize.Large
+        //onSpinnerStateUpdated: genKeySpinner.running=false
     }
 
     SilicaListView {

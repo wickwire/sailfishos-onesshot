@@ -73,9 +73,13 @@ void sshExecuteCmd::genKey(){
            qDebug()<<"ssh key pair not found, generating... " + data_dir;
            procClean->start("killall ssh-keygen");
            procClean->waitForFinished();
-           proc->start("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa -N=");
+           proc->start("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
            proc->waitForFinished();
            qDebug()<<"ssh key pair generated successfully! " + data_dir;
+
+           cplusplus_spinnerState="stopIt";
+
+           emit spinnerStateUpdated(cplusplus_spinnerState);
     }
 
 }
@@ -168,3 +172,20 @@ QString sshExecuteCmd::getPubKeyURL(){
 }
 
 
+QString sshExecuteCmd::getSpinnerState(){
+
+
+    qDebug()<<"FUNCIONOU";
+
+    return cplusplus_spinnerState;
+
+    emit finished();
+
+}
+
+void sshExecuteCmd::cenas(){
+
+
+    qDebug()<<"FUNCIONOU";
+
+}

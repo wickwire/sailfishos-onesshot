@@ -60,6 +60,8 @@ int main(int argc, char *argv[])
 
     QThread* thread = new QThread;
 
+    QString* spinnerState = new QString;
+
     sshGenKey->moveToThread(thread);
 
     QObject::connect(thread, SIGNAL(started()), sshGenKey, SLOT(genKey()),Qt::QueuedConnection);
@@ -78,6 +80,8 @@ int main(int argc, char *argv[])
     view->setSource(SailfishApp::pathTo("qml/oneSSHot.qml"));
 
     view->show();
+
+    QObject::connect(sshGenKey, SIGNAL(spinnerStateUpdated(QVariant)), sshGenKey, SLOT(cenas()));
 
     return app->exec();
 }
