@@ -133,6 +133,8 @@ Page {
                     sshGenKey.start()
 
                     dbFunction.addHost(hostAddress)
+
+                    pageStack.push(addedOK)
                 }
 
             }

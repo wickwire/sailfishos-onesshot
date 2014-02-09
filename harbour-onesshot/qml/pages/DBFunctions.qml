@@ -57,8 +57,6 @@ Item{
                 }
             }
         )
-
-        var dialog = pageStack.push(addedOK)
     }
 
     function deleteHosts(){
