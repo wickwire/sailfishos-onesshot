@@ -25,7 +25,7 @@ public:
 signals:
     QVariant pubKeyUpdated(QVariant sshkey);
     QVariant pubKeyURLUpdated(QVariant sshkeyURL);
-    QVariant spinnerStateUpdated(QVariant spinnerState);
+    QVariant spinnerStateUpdated();
 
     void finished();
 
@@ -35,6 +35,8 @@ public slots:
     QString readKey();
     void publishPubKey(QString keyString);
     void emitSpinnerState();
+    void spinIt();
+    void stopSpinningIt();
 };
 
 #endif // SSHEXECUTECMD_H

@@ -20,7 +20,7 @@
 #include <QDir>
 
 #include <QThread>
-
+#include <QObject>
 
 
 sshExecuteCmd::sshExecuteCmd(QObject *parent) :
@@ -52,13 +52,12 @@ void sshExecuteCmd::executeSSH(QString qmlusername, QString qmladdress, QString 
 
 void sshExecuteCmd::genKey(){
 
+    //QObject::connect(this, SIGNAL(spinnerStateUpdated()), this, SLOT(emitSpinnerState()));
+
     //QString config_dir = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)).filePath(QCoreApplication::applicationName());
     //QString data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
     //QString cache_dir = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
     //qDebug() << "env_dirs: " + config_dir + " " + data_dir + " " + cache_dir;
-
-    //setSpinnerState(true);
-
 
     qDebug("Thread ID @genKey: %d",(int)QThread::currentThreadId());
 
@@ -82,9 +81,8 @@ void sshExecuteCmd::genKey(){
 
            cplusplus_spinnerState=false;
 
-           emit spinnerStateUpdated(cplusplus_spinnerState);
+           emit spinnerStateUpdated();
     }
-
 }
 
 QString sshExecuteCmd::readKey(){
@@ -182,20 +180,38 @@ bool sshExecuteCmd::getSpinnerState(){
 
 }
 
-void sshExecuteCmd::setSpinnerState(bool){
+void sshExecuteCmd::setSpinnerState(bool spinState){
 
-    cplusplus_spinnerState=true;
+    cplusplus_spinnerState=spinState;
 
 }
 
+void sshExecuteCmd::spinIt(){
 
-void sshExecuteCmd::emitSpinnerState(){
+    //cplusplus_spinnerState=true;
 
-    qDebug()<<"FUNCIONOU";
+    setSpinnerState(true);
+
+    emit spinnerStateUpdated();
+
+}
+
+void sshExecuteCmd::stopSpinningIt(){
+
+    //cplusplus_spinnerState=true;
 
     setSpinnerState(false);
 
-    emit finished();
+    emit spinnerStateUpdated();
 
+}
+
+void sshExecuteCmd::emitSpinnerState(){
+
+    setSpinnerState(false);
+
+    qDebug("FUNCIONOU: %d",(int)QThread::currentThreadId());
+
+    emit finished();
 }
 
