@@ -69,7 +69,7 @@ Page {
         model: hostModel
         anchors.fill: parent
         header: PageHeader {
-            title: "Delete Hosts"
+            title: "Remove Hosts"
         }
         delegate: BackgroundItem {
             id: delegate

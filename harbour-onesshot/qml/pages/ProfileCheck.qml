@@ -39,28 +39,48 @@ Page {
         model: 1
         anchors.fill: parent
         header: PageHeader {
-            title: "About oneSSHot"
+            title: "Add Profile"
         }
         delegate: BackgroundItem {
             id: delegate
             height: about.height
-            Label {
-                id: about
-                width: parent.width
-                wrapMode: Text.WordWrap
-                text: "
-* oneSSHot works by automating commands over SSH to remote (either LAN or internet accessible) systems.\n\n
-* To start working with oneSSHot, do as follows:\n\n
-** Add a Host. If no Public/Private Key Pairs exist on your device, they will be generated in the .local/share/harbour-onesshot\n
-** Get the Public Key from oneSSHot and configure it on the authorized_keys file at the remote server\n
-** Add a Profile and associate it with an existing Host\n
-** Tap a Profile to fire its command to the designated host\n\n\n
-* This app served as an experiment with the SailfishOS platform, it is fully functional but bugs may pop up now and then.\n\n
-* It is serving me well in shutting down headless servers, but the possibilities are endless!\n\n\n
-"
+
+            property int hostCount
+            property int profileCount
+
+            DBFunctions{ id: dbFunction}
+
+            Component.onCompleted: {
+                dbFunction.hostCount()
+
+                        if(hostCount > 0){
+                            pageStack.push("ProfileCreate.qml")
+                        }
+                        else{
+                            pageStack.push(emptyHostList)
+                            console.log("Empty Host List")
+                        }
+
+            }
+
+            Dialog {
+
+                id: emptyHostList
+
+                Text{
+                    width: parent.width
+                    text: "Host List is empty, please add a Host"
+                    color: "white"
+                    y: 100
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
+
+                onClicked: {
+                    pageStack.clear()
+                    pageStack.push("OptionsPanel.qml")
+                }
             }
         }
-        VerticalScrollDecorator {}
     }
 }
 

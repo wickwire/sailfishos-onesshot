@@ -42,7 +42,6 @@ Page {
     property int profileHostId
     property string profileCommand
 
-
     ListModel{
         id: hostModel
 

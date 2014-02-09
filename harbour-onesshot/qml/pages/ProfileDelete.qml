@@ -69,7 +69,7 @@ Page {
         model: profileModel
         anchors.fill: parent
         header: PageHeader {
-            title: "Delete Profiles"
+            title: "Remove Profiles"
         }
         delegate: BackgroundItem {
             id: delegate

@@ -6,6 +6,33 @@ Item{
     property var db: null
     property var rs: null
 
+    function hostCount(){
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+
+                rs = tx.executeSql('SELECT count(*) FROM oneSSHotHosts hosts;');
+
+                hostCount=rs.rows.length
+                console.log("hostCount: " + rs.rows.length)
+            }
+        )
+    }
+
+    function profileCount(){
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+            function(tx) {
+
+                rs = tx.executeSql('SELECT count(*) FROM oneSSHotProfiles profiles;');
+                profileCount=rs.rows.length
+                console.log("profileCount: " + rs.rows.length)
+            }
+        )
+    }
+
     function getTheMark(hostId){
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
