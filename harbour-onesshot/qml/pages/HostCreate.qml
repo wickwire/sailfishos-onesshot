@@ -43,18 +43,32 @@ Page {
     property int hostPort
     property string hostUser
 
+    /*
     function insert2db(){
         console.log("about to insert into SQLite")
         dbFunction.addHost(hostAddress)
         console.log("about to show dialog - addedOK")
         var dialog = pageStack.push(addedOK)
     }
+    */
 
     BusyIndicator {
         id: genKeySpinner
         anchors.centerIn: parent
         size: BusyIndicatorSize.Large
         running: sshCmd.spinnerState
+
+//        signal stoppedSpinning()
+
+//        Connections {
+//            target: hostAdd
+//            onStoppedSpinning: {
+//                if(sshCmd.spinnerState === false){
+//                    dbFunction.addHost(hostAddress)
+//                    var dialog = pageStack.push(addedOK)
+//                }
+//            }
+//        }
     }
 
     SilicaListView {
@@ -118,9 +132,9 @@ Page {
 
                     sshGenKey.start()
 
-                    //dbFunction.addHost(hostAddress)
-                    //var dialog = pageStack.push(addedOK)
+                    dbFunction.addHost(hostAddress)
                 }
+
             }
 
             Dialog {

@@ -80,9 +80,6 @@ void sshExecuteCmd::genKey(){
            checkKeysExist();
 
     }
-
-    cplusplus_spinnerState=false;
-
     emit spinnerStateUpdated();
 }
 
