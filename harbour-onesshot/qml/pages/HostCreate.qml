@@ -43,6 +43,12 @@ Page {
     property int hostPort
     property string hostUser
 
+    function insert2db(){
+        console.log("about to insert into SQLite")
+        dbFunction.addHost(hostAddress)
+        console.log("about to show dialog - addedOK")
+        var dialog = pageStack.push(addedOK)
+    }
 
     BusyIndicator {
         id: genKeySpinner
@@ -112,8 +118,8 @@ Page {
 
                     sshGenKey.start()
 
-                    dbFunction.addHost(hostAddress)
-                    var dialog = pageStack.push(addedOK)
+                    //dbFunction.addHost(hostAddress)
+                    //var dialog = pageStack.push(addedOK)
                 }
             }
 

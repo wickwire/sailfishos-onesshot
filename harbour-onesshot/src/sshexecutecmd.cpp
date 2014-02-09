@@ -72,17 +72,18 @@ void sshExecuteCmd::genKey(){
     QFile pubKey(data_dir + "/id_rsa.pub");
 
     if (!pubKey.exists()){
-           qDebug()<<"ssh key pair not found, generating... " + data_dir;
            procClean->start("killall ssh-keygen");
            procClean->waitForFinished();
-           proc->start("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
-           proc->waitForFinished();
-           qDebug()<<"ssh key pair generated successfully! " + data_dir;
+           procClean->close();
+           proc->startDetached("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
 
-           cplusplus_spinnerState=false;
+           checkKeysExist();
 
-           emit spinnerStateUpdated();
     }
+
+    cplusplus_spinnerState=false;
+
+    emit spinnerStateUpdated();
 }
 
 QString sshExecuteCmd::readKey(){
@@ -215,3 +216,24 @@ void sshExecuteCmd::emitSpinnerState(){
     emit finished();
 }
 
+void sshExecuteCmd::checkKeysExist(){
+
+
+    QEventLoop q;
+    QTimer tT;
+
+    data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    QFile pubKey(data_dir + "/id_rsa.pub");
+
+    QObject::connect(&tT, SIGNAL(timeout()),&q, SLOT(quit()));
+
+    QObject::connect(&pubKey, SIGNAL(spinnerStateUpdated()),
+
+            &q, SLOT(quit()));
+
+    tT.start(3000); // 3s timeout
+
+    q.exec();
+
+}

@@ -37,6 +37,8 @@ public slots:
     void emitSpinnerState();
     void spinIt();
     void stopSpinningIt();
+    void checkKeysExist();
+
 };
 
 #endif // SSHEXECUTECMD_H
