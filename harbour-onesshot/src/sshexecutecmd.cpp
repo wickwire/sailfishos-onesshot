@@ -39,20 +39,15 @@ void sshExecuteCmd::executeSSH(QString qmlusername, QString qmladdress, QString 
     qtusername=qmlusername;
     qtcommand=qmlcommand;
 
-    QStringList sshArgs;
-
-    sshArgs.append("onesshot");
 
     qDebug()<< "ssh " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand;
     //proc->start("ssh -i /home/nemo/.local/share/harbour-onesshot/harbour-onesshot/id_rsa nunofaria@192.168.1.15 -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/nemo/.local/share/harbour-onesshot/harbour-onesshot/known_hosts echo 'SailfishOS: '`date` > /tmp/sailfishOS.tmp");
 
-    proc->start("ssh -i " + data_dir + "/id_rsa " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no -o UserKnownHostsFile=" + data_dir + "/known_hosts " + qtcommand,sshArgs);
+    proc->startDetached("ssh -i " + data_dir + "/id_rsa " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no -o UserKnownHostsFile=" + data_dir + "/known_hosts " + qtcommand);
 
 }
 
 void sshExecuteCmd::genKey(){
-
-    //QObject::connect(this, SIGNAL(spinnerStateUpdated()), this, SLOT(emitSpinnerState()));
 
     //QString config_dir = QDir(QStandardPaths::writableLocation(QStandardPaths::ConfigLocation)).filePath(QCoreApplication::applicationName());
     //QString data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);

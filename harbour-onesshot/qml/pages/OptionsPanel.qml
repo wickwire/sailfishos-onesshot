@@ -34,6 +34,12 @@ import Sailfish.Silica 1.0
 
 Page {
     id: page
+
+    property int countHosts
+    property int countProfiles
+
+    DBFunctions{ id: dbFunction}
+
     SilicaListView {
         id: listView
         model: 1
@@ -44,10 +50,6 @@ Page {
         delegate: BackgroundItem {
             id: delegate
 
-            property int hostCount
-            property int profileCount
-
-            DBFunctions{ id: dbFunction}
 
             Component.onCompleted: {
                 dbFunction.profileCount()
@@ -101,21 +103,30 @@ Page {
                 id: hostDelete
                 text: "Remove Host"
                 onClicked: {
-                    if(parseInt(hostCount) > 0){
+                    if(countHosts > 0){
                         pageStack.push("HostDelete.qml")
                     }
                     else{
                         pageStack.push(emptyHostList)
-                        console.log("Empty Host List")
+                        console.log("Empty Host List: " + countHosts)
                     }
                 }
                 y: height*1.5*2
             }
 
-            Button{
+            Button{                
                 id: profileCreate
                 text: "Add Profile"
-                onClicked: pageStack.push("ProfileCheck.qml")
+                onClicked: {
+                    if(countHosts > 0){
+                        pageStack.push("ProfileCreate.qml")
+                    }
+                    else{
+                        pageStack.push(emptyHostList)
+                        console.log("Empty Host List: " + countHosts)
+                    }
+                }
+
                 y: height*1.5*3
             }
 
@@ -123,12 +134,12 @@ Page {
                 id: profileDelete
                 text: "Remove Profile"
                 onClicked: {
-                    if(parseInt(profileCount) > 0){
+                    if(countProfiles > 0){
                         pageStack.push("profileDelete.qml")
                     }
                     else{
                         pageStack.push(emptyProfileList)
-                        console.log("Empty Profile List")
+                        console.log("Empty Profile List" + countProfiles)
                     }
                 }
                 y: height*1.5*4

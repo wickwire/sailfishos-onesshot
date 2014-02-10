@@ -12,10 +12,11 @@ Item{
         db.transaction(
             function(tx) {
 
-                rs = tx.executeSql('SELECT count(*) FROM oneSSHotHosts hosts;');
+                rs = tx.executeSql('SELECT hostId FROM oneSSHotHosts;');
 
-                hostCount=rs.rows.length
-                console.log("hostCount: " + rs.rows.length)
+                countHosts=rs.rows.length
+
+                console.log("DBFunction: hostCount: " + countHosts)
             }
         )
     }
@@ -26,9 +27,11 @@ Item{
         db.transaction(
             function(tx) {
 
-                rs = tx.executeSql('SELECT count(*) FROM oneSSHotProfiles profiles;');
-                profileCount=rs.rows.length
-                console.log("profileCount: " + rs.rows.length)
+                rs = tx.executeSql('SELECT profileId FROM oneSSHotProfiles;');
+
+                countProfiles=rs.rows.length
+
+                console.log("DBFunction: profileCount: " + countProfiles)
             }
         )
     }
