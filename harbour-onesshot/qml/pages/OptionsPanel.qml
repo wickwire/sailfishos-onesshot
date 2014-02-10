@@ -135,7 +135,7 @@ Page {
                 text: "Remove Profile"
                 onClicked: {
                     if(countProfiles > 0){
-                        pageStack.push("profileDelete.qml")
+                        pageStack.push("ProfileDelete.qml")
                     }
                     else{
                         pageStack.push(emptyProfileList)
