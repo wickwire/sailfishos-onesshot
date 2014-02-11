@@ -125,10 +125,8 @@ Page {
                     console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
 
                     sshGenKey.start()
-
-                    dbFunction.addHost(hostAddress)
-
-                    pageStack.push(addedOK)
+                    //dbFunction.addHost(hostAddress)
+                    //pageStack.push(addedOK)
                 }
 
             }
