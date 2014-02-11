@@ -42,15 +42,7 @@ Page {
     property string hostAddress
     property int hostPort
     property string hostUser
-
-    /*
-    function insert2db(){
-        console.log("about to insert into SQLite")
-        dbFunction.addHost(hostAddress)
-        console.log("about to show dialog - addedOK")
-        var dialog = pageStack.push(addedOK)
-    }
-    */
+    property bool generatingKeys: false
 
     BusyIndicator {
         id: genKeySpinner
@@ -58,17 +50,19 @@ Page {
         size: BusyIndicatorSize.Large
         running: sshCmd.spinnerState
 
-//        signal stoppedSpinning()
+        Component.onStatusChanged: {
+            if(running == true){
+                generatingKeys=true
+            }
+            else{
+                generatingKeys=false
+            }
 
-//        Connections {
-//            target: hostAdd
-//            onStoppedSpinning: {
-//                if(sshCmd.spinnerState === false){
-//                    dbFunction.addHost(hostAddress)
-//                    var dialog = pageStack.push(addedOK)
-//                }
-//            }
-//        }
+            if(generatingKeys==true && running == false){
+                dbFunction.addHost(hostAddress)
+                pageStack.push(addedOK)
+            }
+        }
     }
 
     SilicaListView {
