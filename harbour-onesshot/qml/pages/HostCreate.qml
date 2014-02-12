@@ -88,7 +88,6 @@ Page {
             }
 
             if (state == "stopped"){
-                console.log("SPINNER JUST OFF")
                 if(generatingKeys==true){
                     console.log("SPINNER OFF AND KEYS OK")
                     dbFunction.addHost(hostAddress)
@@ -158,8 +157,13 @@ Page {
                     console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
 
                     sshGenKey.start()
-                    //dbFunction.addHost(hostAddress)
-                    //pageStack.push(addedOK)
+
+
+                    if(sshCmd.checkExistingKeys() === true){
+                        console.log("SPINNER OFF AND KEYS ALREADY HERE")
+                        dbFunction.addHost(hostAddress)
+                        pageStack.push(addedOK)
+                    }
                 }
             }
         }

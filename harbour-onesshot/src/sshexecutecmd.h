@@ -38,7 +38,8 @@ public slots:
     void emitSpinnerState();
     void spinIt();
     void stopSpinningIt();
-    void checkKeysExist();
+    void checkGeneratedKeys();
+    bool checkExistingKeys();
 
 };
 

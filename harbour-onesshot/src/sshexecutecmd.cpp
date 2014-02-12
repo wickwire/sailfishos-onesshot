@@ -72,7 +72,7 @@ void sshExecuteCmd::genKey(){
            procClean->close();
            proc->startDetached("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
 
-           checkKeysExist();
+           checkGeneratedKeys();
 
     }
     emit spinnerStateUpdated();
@@ -208,7 +208,7 @@ void sshExecuteCmd::emitSpinnerState(){
     emit finished();
 }
 
-void sshExecuteCmd::checkKeysExist(){
+void sshExecuteCmd::checkGeneratedKeys(){
 
 
     QEventLoop q;
@@ -220,12 +220,26 @@ void sshExecuteCmd::checkKeysExist(){
 
     QObject::connect(&tT, SIGNAL(timeout()),&q, SLOT(quit()));
 
-    QObject::connect(&pubKey, SIGNAL(spinnerStateUpdated()),
-
-            &q, SLOT(quit()));
+    QObject::connect(&pubKey, SIGNAL(finished()), &q, SLOT(quit()));
 
     tT.start(3000); // 3s timeout
 
     q.exec();
+
+}
+
+
+bool sshExecuteCmd::checkExistingKeys(){
+
+    data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    QFile pubKey(data_dir + "/id_rsa.pub");
+
+    if(pubKey.exists()) {
+        return true;
+    }
+    else{
+        return false;
+    }
 
 }
