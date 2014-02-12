@@ -35,6 +35,26 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
+    Dialog {
+
+        id: addedOK
+        objectName: "hostAdded"
+
+        Text{
+            width: parent.width
+            text: "Host added Successfully!\n\n Your Public Key is available in the pull-down menu. Add it to this host authorized_keys file.\n\n"
+            wrapMode: Text.Wrap
+            color: "white"
+            y: 100
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+
+        onClicked: {
+            pageStack.clear()
+            pageStack.push("HomeScreen.qml")
+        }
+    }
+
     DBFunctions{ id: dbFunction}
 
     property int hostId
@@ -50,17 +70,30 @@ Page {
         size: BusyIndicatorSize.Large
         running: sshCmd.spinnerState
 
-        Component.onStatusChanged: {
-            if(running == true){
+        states: [
+            State {
+                name: "spinning"
+                when: sshCmd.spinnerState==true
+            },
+            State {
+                name: "stopped"
+                when: sshCmd.spinnerState==false
+            }
+        ]
+
+        onStateChanged: {
+            if (state == "spinning"){
+                console.log("SPINNER ON")
                 generatingKeys=true
             }
-            else{
-                generatingKeys=false
-            }
 
-            if(generatingKeys==true && running == false){
-                dbFunction.addHost(hostAddress)
-                pageStack.push(addedOK)
+            if (state == "stopped"){
+                console.log("SPINNER JUST OFF")
+                if(generatingKeys==true){
+                    console.log("SPINNER OFF AND KEYS OK")
+                    dbFunction.addHost(hostAddress)
+                    var dialog = pageStack.push(addedOK)
+                }
             }
         }
     }
@@ -127,27 +160,6 @@ Page {
                     sshGenKey.start()
                     //dbFunction.addHost(hostAddress)
                     //pageStack.push(addedOK)
-                }
-
-            }
-
-            Dialog {
-
-                id: addedOK
-                objectName: "hostAdded"
-
-                Text{
-                    width: parent.width
-                    text: "Host added Successfully!\n\n Your Public Key is available in the pull-down menu. Add it to this host authorized_keys file.\n\n"
-                    wrapMode: Text.Wrap
-                    color: "white"
-                    y: 100
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                onClicked: {
-                    pageStack.clear()
-                    pageStack.push("HomeScreen.qml")
                 }
             }
         }
