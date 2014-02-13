@@ -36,13 +36,13 @@ Item{
         )
     }
 
-    function getTheMark(hostId){
+    function getTheMark(hostId,profileId){
         db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
 
         db.transaction(
             function(tx) {
 
-                rs = tx.executeSql('SELECT hosts.hostUser, hosts.hostName, hosts.hostAddress, hosts.hostPort, profiles.profileCommand FROM oneSSHotHosts hosts, oneSSHotProfiles profiles WHERE profiles.profileHostId = hosts.hostId AND hosts.hostId = ' + hostId + ' group by hosts.hostId;');
+                rs = tx.executeSql('SELECT hosts.hostUser, hosts.hostName, hosts.hostAddress, hosts.hostPort, profiles.profileCommand FROM oneSSHotHosts hosts, oneSSHotProfiles profiles WHERE profiles.profileHostId = hosts.hostId AND hosts.hostId = ' + hostId + ' and profiles.profileId = ' + profileId);
 
                 for(var i = 0; i < rs.rows.length; i++) {
                     console.log("getTheMark: " + rs.rows.item(i).hostUser

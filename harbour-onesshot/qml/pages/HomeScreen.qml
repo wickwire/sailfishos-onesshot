@@ -118,7 +118,8 @@ Page {
                     color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
                 }
                 onClicked: {
-                     dbFunction.getTheMark(hostId)
+                    console.log("hostId: " + hostId + "profileId: " + profileId)
+                    dbFunction.getTheMark(hostId,profileId)
                     sshCmd.executeSSH(sshUser,sshAddress,sshPort,sshCommand)
 
                     var dialog = pageStack.push(sshot)
