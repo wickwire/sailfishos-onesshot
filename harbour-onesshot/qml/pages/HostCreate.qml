@@ -158,7 +158,6 @@ Page {
 
                     sshGenKey.start()
 
-
                     if(sshCmd.checkExistingKeys() === true){
                         console.log("SPINNER OFF AND KEYS ALREADY HERE")
                         dbFunction.addHost(hostAddress)

@@ -72,10 +72,17 @@ void sshExecuteCmd::genKey(){
            procClean->close();
            proc->startDetached("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
 
-           checkGeneratedKeys();
+           sshExecuteCmd * searchKey = new sshExecuteCmd;
 
+           QTimer * counter = new QTimer;
+
+           searchKey->checkGeneratedKeys();
+
+           QObject::connect(counter, SIGNAL(timeout()), searchKey, SLOT(checkGeneratedKeys()));
+           QObject::connect(searchKey, SIGNAL(keysGeneratedUpdated()), counter, SLOT(stop()));
+           QObject::connect(searchKey, SIGNAL(keysGeneratedUpdated()), this, SLOT(stopSpinningIt()));
+           counter->start(1000);
     }
-    emit spinnerStateUpdated();
 }
 
 QString sshExecuteCmd::readKey(){
@@ -191,10 +198,8 @@ void sshExecuteCmd::spinIt(){
 
 void sshExecuteCmd::stopSpinningIt(){
 
-    //cplusplus_spinnerState=true;
-
     setSpinnerState(false);
-
+    qDebug() << "stop spinning it!";
     emit spinnerStateUpdated();
 
 }
@@ -210,25 +215,17 @@ void sshExecuteCmd::emitSpinnerState(){
 
 void sshExecuteCmd::checkGeneratedKeys(){
 
-
-    QEventLoop q;
-    QTimer tT;
-
     data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 
     QFile pubKey(data_dir + "/id_rsa.pub");
 
     if(pubKey.exists()){
-        emit spinnerStateUpdated();
-        qDebug() << "FILE FOUND...";
+        qDebug() << pubKey.fileName() << " FOUND!";
+        emit keysGeneratedUpdated();
     }
-
-    QObject::connect(&tT, SIGNAL(timeout()),&q, SLOT(quit()));
-
-
-    tT.start(3000); // 3s timeout
-
-    q.exec();
+    else{
+        qDebug() << pubKey.fileName() << " NOT FOUND!";
+    }
 
 }
 

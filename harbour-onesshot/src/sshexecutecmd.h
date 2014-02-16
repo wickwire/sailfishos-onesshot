@@ -9,7 +9,7 @@ class sshExecuteCmd : public QObject
     Q_PROPERTY(QString pubKey READ getPubKey NOTIFY pubKeyUpdated)
     Q_PROPERTY(QString pubKeyURL READ getPubKeyURL NOTIFY pubKeyURLUpdated)
     Q_PROPERTY(bool spinnerState READ getSpinnerState WRITE setSpinnerState NOTIFY spinnerStateUpdated)
-    //Q_PROPERTY(bool keysGenerated READ getKeysGenerated NOTIFY keysGeneratedUpdated)
+    Q_PROPERTY(bool keysGenerated NOTIFY keysGeneratedUpdated)
 
     Q_OBJECT
 public:
@@ -21,13 +21,12 @@ public:
     QString getPubKeyURL();
     bool getSpinnerState();
     void setSpinnerState(bool);
-    //bool getKeysGenerated();
     QString data_dir;
 signals:
     QVariant pubKeyUpdated(QVariant sshkey);
     QVariant pubKeyURLUpdated(QVariant sshkeyURL);
     QVariant spinnerStateUpdated();
-    //QVariant keysGeneratedUpdated();
+    void keysGeneratedUpdated();
 
     void finished();
 
