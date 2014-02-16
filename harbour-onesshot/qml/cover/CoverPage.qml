@@ -38,7 +38,7 @@ CoverPlaceholder{
     Image{
         id: logo
         anchors.centerIn: parent
-        source: "harbour-onesshot.png"
+        source: "/usr/share/icons/hicolor/86x86/apps/harbour-onesshot.png"
     }
 
     Text{
