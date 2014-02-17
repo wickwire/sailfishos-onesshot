@@ -37,6 +37,14 @@ Page {
 
     property bool deletingKeys: false
 
+    RemorsePopup {
+        id: remorse
+        onTriggered: {
+            sshDelKey.start()
+            var dialog = pageStack.push(deletedOK)
+        }
+    }
+
     Dialog {
 
         id: deletedOK
@@ -54,38 +62,6 @@ Page {
         onClicked: {
             pageStack.clear()
             pageStack.push("HomeScreen.qml")
-        }
-    }
-
-    BusyIndicator {
-        id: genKeySpinner
-        anchors.centerIn: parent
-        size: BusyIndicatorSize.Large
-        running: sshCmd.spinnerState
-
-        states: [
-            State {
-                name: "spinning"
-                when: sshCmd.spinnerState==true
-            },
-            State {
-                name: "stopped"
-                when: sshCmd.spinnerState==false
-            }
-        ]
-
-        onStateChanged: {
-            if (state == "spinning"){
-                console.log("DEL KEYS - SPINNER ON")
-                deletingKeys=true
-            }
-
-            if (state == "stopped"){
-                if(deletingKeys==true){
-                    console.log("SPINNER OFF AND KEYS OK")
-                    var dialog = pageStack.push(deletedOK)
-                }
-            }
         }
     }
 
@@ -109,7 +85,8 @@ Page {
             Button{
                 id: delKeys
                 text: "Delete SSH keys"
-                onClicked: sshDelKey.start()
+                //onClicked: sshDelKey.start()
+                onClicked: remorse.execute("Are you sure...?")
                 y: height*1.5*2
             }
         }

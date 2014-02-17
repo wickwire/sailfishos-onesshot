@@ -263,6 +263,8 @@ bool sshExecuteCmd::getKeysDeleted(){
 
 void sshExecuteCmd::deleteKeys(){
 
+    setSpinnerState(true);
+
     data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 
     QFile pubKey(data_dir + "/id_rsa.pub");
@@ -275,6 +277,9 @@ void sshExecuteCmd::deleteKeys(){
     qDebug() << "privKey deleted";
     knownHosts.remove();
     qDebug() << "known_hosts deleted";
+
+
+    setSpinnerState(false);
 
     emit keysDeletedUpdated();
 
