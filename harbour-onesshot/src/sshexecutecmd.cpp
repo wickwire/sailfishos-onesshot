@@ -252,3 +252,30 @@ bool sshExecuteCmd::getKeysGenerated(){
     return true;
 
 }
+
+bool sshExecuteCmd::getKeysDeleted(){
+
+    emit finished();
+
+    return true;
+
+}
+
+void sshExecuteCmd::deleteKeys(){
+
+    data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+
+    QFile pubKey(data_dir + "/id_rsa.pub");
+    QFile privKey(data_dir + "/id_rsa");
+    QFile knownHosts(data_dir + "/known_hosts");
+
+    pubKey.remove();
+    qDebug() << "pubKey deleted";
+    privKey.remove();
+    qDebug() << "privKey deleted";
+    knownHosts.remove();
+    qDebug() << "known_hosts deleted";
+
+    emit keysDeletedUpdated();
+
+}

@@ -75,12 +75,12 @@ Page {
             */
 
             MenuItem {
-                text: "Profiles"
+                text: "Manage Profiles"
                 onClicked: pageStack.push("OptionsPanel.qml")
             }
             MenuItem {
-                text: "SSH Key"
-                onClicked: pageStack.push("GetSSHKey.qml")
+                text: "Manage SSH Keys"
+                onClicked: pageStack.push("ManageSSHKeys.qml")
             }
             MenuItem {
                 text: "Help/About"

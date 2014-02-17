@@ -45,7 +45,7 @@ Page {
         model: 1
         anchors.fill: parent
         header: PageHeader {
-            title: "Options Panel"
+            title: "Manage Profiles"
         }
         delegate: BackgroundItem {
             id: delegate

@@ -60,17 +60,29 @@ int main(int argc, char *argv[])
 
     sshExecuteCmd *sshGenKey = new sshExecuteCmd();
 
-    QThread* thread = new QThread;
+    sshExecuteCmd *sshDelKey = new sshExecuteCmd();
 
-    sshGenKey->moveToThread(thread);
+    QThread* sshGenKeythread = new QThread;
 
-    QObject::connect(thread, SIGNAL(started()), sshGenKey, SLOT(genKey()),Qt::QueuedConnection);
-    QObject::connect(thread, SIGNAL(started()), sshCmd, SLOT(spinIt()));
+    QThread* sshDelKeythread = new QThread;
+
+    sshGenKey->moveToThread(sshGenKeythread);
+
+    QObject::connect(sshGenKeythread, SIGNAL(started()), sshGenKey, SLOT(genKey()),Qt::QueuedConnection);
+    QObject::connect(sshGenKeythread, SIGNAL(started()), sshCmd, SLOT(spinIt()));
     QObject::connect(sshGenKey, SIGNAL(spinnerStateUpdated()), sshCmd, SLOT(stopSpinningIt()));
 
     qDebug("Main Thread ID: %d",(int)QGuiApplication::instance()->thread());
 
-    view->rootContext()->setContextProperty("sshGenKey", thread);
+    sshDelKey->moveToThread(sshDelKeythread);
+
+    QObject::connect(sshDelKeythread, SIGNAL(started()), sshDelKey, SLOT(deleteKeys()),Qt::QueuedConnection);
+    QObject::connect(sshDelKeythread, SIGNAL(started()), sshCmd, SLOT(spinIt()));
+    QObject::connect(sshDelKey, SIGNAL(keysDeletedUpdated()), sshCmd, SLOT(stopSpinningIt()));
+
+    view->rootContext()->setContextProperty("sshGenKey", sshGenKeythread);
+
+    view->rootContext()->setContextProperty("sshDelKey", sshDelKeythread);
 
     view->rootContext()->setContextProperty("sshCmd", sshCmd);
 
