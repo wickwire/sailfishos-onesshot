@@ -145,7 +145,9 @@ void sshExecuteCmd::publishPubKey(){
         cplusplus_pubKeyURL = hastebinKey.toString();
         emit pubKeyURLUpdated(cplusplus_pubKeyURL);
 
-        qDebug() <<  "http://hastebin.com/" + hastebinKey.toString();
+        qDebug() <<  "pubKeyURL - C++ - http://hastebin.com/" << cplusplus_pubKeyURL;
+
+        qDebug() <<  "pubKey - C++ - " << cplusplus_pubKey;
 
         tT.stop();
 

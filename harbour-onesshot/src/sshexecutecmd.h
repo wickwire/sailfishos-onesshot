@@ -26,8 +26,8 @@ public:
     void setSpinnerState(bool);
     QString data_dir;
 signals:
-    QString pubKeyUpdated(QString sshkey);
-    QString pubKeyURLUpdated(QString sshkeyURL);
+    QString pubKeyUpdated(QString cplusplus_pubKey);
+    QString pubKeyURLUpdated(QString cplusplus_pubKeyURL);
     bool spinnerStateUpdated();
     void keysGeneratedUpdated();
     void keysDeletedUpdated();
