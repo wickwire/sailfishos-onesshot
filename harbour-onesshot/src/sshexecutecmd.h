@@ -26,9 +26,9 @@ public:
     void setSpinnerState(bool);
     QString data_dir;
 signals:
-    QVariant pubKeyUpdated(QVariant sshkey);
-    QVariant pubKeyURLUpdated(QVariant sshkeyURL);
-    QVariant spinnerStateUpdated();
+    QString pubKeyUpdated(QString sshkey);
+    QString pubKeyURLUpdated(QString sshkeyURL);
+    bool spinnerStateUpdated();
     void keysGeneratedUpdated();
     void keysDeletedUpdated();
 
@@ -37,8 +37,8 @@ signals:
 public slots:
     void executeSSH(QString qmlusername, QString qmladdress, QString qmlport, QString qmlcommand);
     void genKey();
-    QString readKey();
-    void publishPubKey(QString keyString);
+    void readKey();
+    void publishPubKey();
     void emitSpinnerState();
     void spinIt();
     void stopSpinningIt();

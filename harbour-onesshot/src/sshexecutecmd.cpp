@@ -85,7 +85,7 @@ void sshExecuteCmd::genKey(){
     }
 }
 
-QString sshExecuteCmd::readKey(){
+void sshExecuteCmd::readKey(){
 
     data_dir = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
 
@@ -94,12 +94,15 @@ QString sshExecuteCmd::readKey(){
     pubKey.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QTextStream textStream(&pubKey);
-    QString keyString = textStream.readAll();
+    cplusplus_pubKey = textStream.readAll();
     pubKey.close();
-    return keyString;
+
+    emit pubKeyUpdated(cplusplus_pubKey);
+
+    publishPubKey();
 }
 
-void sshExecuteCmd::publishPubKey(QString keyString){
+void sshExecuteCmd::publishPubKey(){
 
     QNetworkAccessManager manager;
     QEventLoop q;
@@ -108,7 +111,7 @@ void sshExecuteCmd::publishPubKey(QString keyString){
     QNetworkRequest request;
     QByteArray postData;
 
-    postData.append(keyString);
+    postData.append(cplusplus_pubKey);
 
     QByteArray hasteBinJSON;
 

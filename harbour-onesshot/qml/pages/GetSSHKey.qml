@@ -36,6 +36,8 @@ Page {
     id: page
 
     property string publickey
+    property string publickeyURL
+
 
     SilicaListView {
         id: listView
@@ -51,15 +53,17 @@ Page {
                 id: about
                 width: parent.width
                 wrapMode: Text.Wrap
-                text: "Below should be the SSH Public Key for this device:\n\n1- published to Hastebin\n2- visible below.\n\nIf neither is shown, it will be generated when you add your first remote host.\n\n" + sshCmd.pubKeyURL + "\n\n" + publickey
+                text: "Below should be the SSH Public Key for this device:\n\n1- published to Hastebin\n2- visible below.\n\nIf neither is shown, it will be generated when you add your first remote host.\n\n" + publickeyURL + "\n\n" + publickey
             }
         }
 
+        /*
         Component.onCompleted: {
 
             publickey=sshCmd.readKey()
             sshCmd.publishPubKey(publickey)
         }
+        */
     }
 }
 

@@ -35,7 +35,43 @@ import Sailfish.Silica 1.0
 Page {
     id: page
 
-    property bool deletingKeys: false
+    property bool readingKeys: false
+
+    BusyIndicator {
+        id: readKeySpinner
+        anchors.centerIn: parent
+        size: BusyIndicatorSize.Large
+        running: sshCmd.spinnerState
+
+        states: [
+            State {
+                name: "spinning"
+                when: sshCmd.spinnerState==true
+            },
+            State {
+                name: "stopped"
+                when: sshCmd.spinnerState==false
+            }
+        ]
+
+        onStateChanged: {
+            if (state == "spinning"){
+                console.log("READ SPINNER ON")
+                readingKeys=true
+            }
+
+            if (state == "stopped"){
+                if(readingKeys==true){
+                    console.log("READ SPINNER OFF AND KEYS OK: " + sshReadKey.pubKey + " -- " + sshReadKey.pubKeyURL)
+                    var pubKeyData = {
+                        "publickey" : sshReadKey.pubKey,
+                        "publickeyURL" : sshReadKey.pubKeyURL
+                    };
+                    pageStack.push("GetSSHKey.qml",pubKeyData)
+                }
+            }
+        }
+    }
 
     RemorsePopup {
         id: remorse
@@ -78,14 +114,16 @@ Page {
             Button{
                 id: getPubKey
                 text: "Show Public Key"
-                onClicked: pageStack.push("GetSSHKey.qml")
+                onClicked: {
+                    sshReadKey.start()
+                    //pageStack.push("GetSSHKey.qml")
+                }
                 y: height*1.5*1
             }
 
             Button{
                 id: delKeys
                 text: "Delete SSH keys"
-                //onClicked: sshDelKey.start()
                 onClicked: remorse.execute("Are you sure...?")
                 y: height*1.5*2
             }
