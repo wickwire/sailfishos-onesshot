@@ -18,8 +18,6 @@ public:
     QString cplusplus_pubKey;
     QString cplusplus_pubKeyURL;
     bool cplusplus_spinnerState;
-    QString getPubKey();
-    QString getPubKeyURL();
     bool getSpinnerState();
     bool getKeysGenerated();
     bool getKeysDeleted();
@@ -45,7 +43,8 @@ public slots:
     void checkGeneratedKeys();
     bool checkExistingKeys();
     void deleteKeys();
-
+    QString getPubKey();
+    QString getPubKeyURL();
 };
 
 #endif // SSHEXECUTECMD_H

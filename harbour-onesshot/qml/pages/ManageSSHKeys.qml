@@ -62,7 +62,7 @@ Page {
 
             if (state == "stopped"){
                 if(readingKeys==true){
-                    console.log("READ SPINNER OFF AND KEYS OK: " + sshCmd.pubKey + " -- " + sshCmd.pubKeyURL)
+                    console.log("READ SPINNER OFF AND KEYS OK: " + sshReadKey.pubKey + " -- " + sshReadKey.pubKeyURL)
                     var pubKeyData = {
                         "publickey" : sshReadKey.pubKey,
                         "publickeyURL" : sshReadKey.pubKeyURL
@@ -116,7 +116,6 @@ Page {
                 text: "Show Public Key"
                 onClicked: {
                     sshReadKey.start()
-                    //pageStack.push("GetSSHKey.qml")
                 }
                 y: height*1.5*1
             }

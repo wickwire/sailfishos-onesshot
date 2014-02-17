@@ -2,7 +2,7 @@
 %dir /usr/lib/debug/usr
 %dir /usr/lib/debug/usr/bin
 %dir /usr/lib/debug/.build-id
-%dir /usr/lib/debug/.build-id/0b
+%dir /usr/lib/debug/.build-id/8b
 /usr/lib/debug/usr/bin/harbour-onesshot.debug
-/usr/lib/debug/.build-id/0b/a9241c73fe3dc276767f9e3b0c9d27cfb13298
-/usr/lib/debug/.build-id/0b/a9241c73fe3dc276767f9e3b0c9d27cfb13298.debug
+/usr/lib/debug/.build-id/8b/25cb9c442ba9d2c23d3cd9b87dce209602a216.debug
+/usr/lib/debug/.build-id/8b/25cb9c442ba9d2c23d3cd9b87dce209602a216

@@ -95,6 +95,8 @@ int main(int argc, char *argv[])
     QObject::connect(sshReadKeythread, SIGNAL(started()), sshReadKey, SLOT(readKey()),Qt::QueuedConnection);
     QObject::connect(sshReadKeythread, SIGNAL(started()), sshCmd, SLOT(spinIt()));
     QObject::connect(sshReadKey, SIGNAL(pubKeyURLUpdated(QString)), sshCmd, SLOT(stopSpinningIt()));
+    QObject::connect(sshReadKey, SIGNAL(pubKeyURLUpdated(QString)), sshReadKey, SLOT(getPubKey()));
+    QObject::connect(sshReadKey, SIGNAL(pubKeyURLUpdated(QString)), sshReadKey, SLOT(getPubKeyURL()));
 
 
     view->rootContext()->setContextProperty("sshGenKey", sshGenKeythread);
