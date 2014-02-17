@@ -40,7 +40,7 @@ void sshExecuteCmd::executeSSH(QString qmlusername, QString qmladdress, QString 
     qtcommand=qmlcommand;
 
 
-    qDebug()<< "ssh " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand;
+    qDebug()<< "ssh -X " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no " + qtcommand;
     //proc->start("ssh -X -i /home/nemo/.local/share/harbour-onesshot/harbour-onesshot/id_rsa nunofaria@192.168.1.15 -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/home/nemo/.local/share/harbour-onesshot/harbour-onesshot/known_hosts echo 'SailfishOS: '`date` > /tmp/sailfishOS.tmp");
 
     proc->startDetached("ssh -X -i " + data_dir + "/id_rsa " + qtusername + "@" + qtaddress + " -p " + qtport + " -o StrictHostKeyChecking=no -o UserKnownHostsFile=" + data_dir + "/known_hosts " + qtcommand);
@@ -242,5 +242,13 @@ bool sshExecuteCmd::checkExistingKeys(){
     else{
         return false;
     }
+
+}
+
+bool sshExecuteCmd::getKeysGenerated(){
+
+    emit finished();
+
+    return true;
 
 }
