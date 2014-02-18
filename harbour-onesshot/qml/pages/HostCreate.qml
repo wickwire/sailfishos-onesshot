@@ -50,6 +50,7 @@ Page {
         }
 
         onClicked: {
+            sshGenKey.quit()
             pageStack.clear()
             pageStack.push("HomeScreen.qml")
         }
@@ -159,6 +160,7 @@ Page {
                     sshGenKey.start()
 
                     if(sshCmd.checkExistingKeys() === true){
+                        sshGenKey.quit()
                         console.log("SPINNER OFF AND KEYS ALREADY HERE")
                         dbFunction.addHost(hostAddress)
                         pageStack.push(addedOK)

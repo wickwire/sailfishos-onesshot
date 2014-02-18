@@ -105,6 +105,8 @@ int main(int argc, char *argv[])
 
     view->rootContext()->setContextProperty("sshReadKey", sshReadKeythread);
 
+    view->rootContext()->setContextProperty("sshReadKeyValue", sshReadKey);
+
     view->rootContext()->setContextProperty("sshCmd", sshCmd);
 
     view->setSource(SailfishApp::pathTo("qml/oneSSHot.qml"));

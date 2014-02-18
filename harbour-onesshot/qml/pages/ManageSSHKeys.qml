@@ -62,10 +62,10 @@ Page {
 
             if (state == "stopped"){
                 if(readingKeys==true){
-                    console.log("READ SPINNER OFF AND KEYS OK: " + sshReadKey.pubKey + " -- " + sshReadKey.pubKeyURL)
+                    console.log("READ SPINNER OFF AND KEYS OK: " + sshReadKeyValue.pubKey + " -- " + sshReadKeyValue.pubKeyURL)
                     var pubKeyData = {
-                        "publickey" : sshReadKey.pubKey,
-                        "publickeyURL" : sshReadKey.pubKeyURL
+                        "publickey" : sshReadKeyValue.pubKey,
+                        "publickeyURL" : sshReadKeyValue.pubKeyURL
                     };
                     pageStack.push("GetSSHKey.qml",pubKeyData)
                 }
@@ -96,6 +96,7 @@ Page {
         }
 
         onClicked: {
+            sshDelKey.quit()
             pageStack.clear()
             pageStack.push("HomeScreen.qml")
         }

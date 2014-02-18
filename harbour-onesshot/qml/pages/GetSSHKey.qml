@@ -57,13 +57,11 @@ Page {
             }
         }
 
-        /*
-        Component.onCompleted: {
 
-            publickey=sshCmd.readKey()
-            sshCmd.publishPubKey(publickey)
+        Component.onCompleted: {
+            sshReadKey.quit()
         }
-        */
+
     }
 }
 
