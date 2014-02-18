@@ -62,7 +62,6 @@ Item{
         )
     }
 
-
     function addHost(){
 
         //if(db !== null) return;
@@ -99,7 +98,6 @@ Item{
             }
         )
     }
-
 
     function listHosts() {
 
@@ -208,7 +206,6 @@ Item{
             }
         )
     }
-
 
     function deleteProfiles(){
 
