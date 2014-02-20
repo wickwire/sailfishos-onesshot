@@ -42,37 +42,10 @@ Page {
 
     DBFunctions{ id: dbFunction }
 
-    // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
         anchors.fill: parent
 
-        // PullDownMenu and PushUpMenu must be declared in SilicaFlickable, SilicaListView or SilicaGridView
         PullDownMenu {
-
-            /*
-            MenuItem {
-                text: "Add New Host"
-                onClicked: pageStack.push("HostCreate.qml")
-            }
-            MenuItem {
-                text: "Delete Hosts"
-                onClicked: pageStack.push("HostDelete.qml")
-            }
-            MenuItem {
-                text: "Clear DB"
-                onClicked: {
-                    var dialog = pageStack.push("DropDB.qml")
-                }
-            }
-            MenuItem {
-                text: "Add New Profile"
-                onClicked: pageStack.push("ProfileCreate.qml")
-            }
-            MenuItem {
-                text: "Delete Profiles"
-                onClicked: pageStack.push("ProfileDelete.qml")
-            }
-            */
 
             MenuItem {
                 text: "Manage Profiles"
@@ -88,8 +61,6 @@ Page {
             }
         }
 
-        // Tell SilicaFlickable the height of its content.
-        //contentHeight: column.height
 
         ListModel{
             id: profileModel

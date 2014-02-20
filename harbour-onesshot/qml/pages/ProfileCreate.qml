@@ -50,95 +50,89 @@ Page {
         }
     }
 
-    SilicaListView {
-        id: listView
-        model: 1
-        anchors.fill: parent
-        header: PageHeader {
+    Column{
+
+        width: parent.width
+
+        PageHeader {
             title: "Add Profile"
         }
-        delegate: BackgroundItem {
-            id: delegate
-            height: 400
 
-            TextField {
-                id: profileNameField
-                placeholderText: "Profile Name"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-            }
+        TextField {
+            id: profileNameField
+            placeholderText: "Profile Name"
+            color: "white"
+            width: parent.width
+        }
 
-            TextField {
-                id: profileCommandField
-                placeholderText: "Command"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: profileNameField.y+profileNameField.height
-            }
+        TextField {
+            id: profileCommandField
+            placeholderText: "Command"
+            color: "white"
+            width: parent.width
+        }
 
-            ComboBox {
-                id: profileHostField
-                width: parent.width
-                label: "Host"
-                y: profileCommandField.y+profileCommandField.height
-                height: 100
 
-                menu: ContextMenu {
-                    id: contextMenu
+        ComboBox {
+            id: profileHostField
+            width: parent.width
+            label: "Host"
 
-                    Repeater {
+            menu: ContextMenu {
+                id: contextMenu
+
+
+                Repeater {
 
                     model: hostModel
 
                     MenuItem { text: name }
 
-                    }
-                }
-            }
-
-            Button{
-                id: profileSave
-                text: "Save Profile"
-                y: profileHostField.y+profileHostField.height
-
-                onClicked: {
-
-                     var sshHostId = hostModel.get(profileHostField.currentIndex)
-
-                    profileName=profileNameField.text
-                    profileHostId=sshHostId.hostId
-                    profileHost=profileHostField.currentItem.text
-                    profileCommand=profileCommandField.text
-
-                    console.log("profileName: " + profileName + "profileHostId: " + profileHostId + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
-
-                    dbFunction.saveProfile()
-                    var dialog = pageStack.push(savedOK)
-                }
-            }
-
-
-            Dialog {
-
-                id: savedOK
-
-                Text{
-                    width: parent.width
-                    text: "Profile saved Successfully!"
-                    color: "white"
-                    y: 100
-                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
-                onClicked: {
-                    pageStack.clear()
-                    pageStack.push("HomeScreen.qml")
-                }
             }
         }
-        VerticalScrollDecorator {}
+
+
+        Button{
+            id: profileSave
+            text: "Save Profile"
+
+            onClicked: {
+
+                var sshHostId = hostModel.get(profileHostField.currentIndex)
+
+                profileName=profileNameField.text
+                profileHostId=sshHostId.hostId
+                profileHost=profileHostField.currentItem.text
+                profileCommand=profileCommandField.text
+
+                console.log("profileName: " + profileName + "profileHostId: " + profileHostId + "profileHost: " + profileHost + "profileCommand: " + profileCommand)
+
+                dbFunction.saveProfile()
+                var dialog = pageStack.push(savedOK)
+            }
+        }
+
+
+        Dialog {
+
+            id: savedOK
+
+            Text{
+                width: parent.width
+                text: "Profile saved Successfully!"
+                color: "white"
+                y: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            onClicked: {
+                pageStack.clear()
+                pageStack.push("HomeScreen.qml")
+            }
+        }
+
     }
 }
 

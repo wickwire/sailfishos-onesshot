@@ -57,99 +57,88 @@ Page {
         }
     }
 
-    SilicaListView {
-        id: listView
-        model: 1
+    Column {
+
         anchors.fill: parent
-        header: PageHeader {
+
+        PageHeader {
             title: "Update Profile"
         }
-        delegate: BackgroundItem {
-            id: delegate
-            height: 400
 
-            TextField {
-                id: profileNameField
-                text: activeProfile
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-            }
+        TextField {
+            id: profileNameField
+            text: activeProfile
+            color: "white"
+            width: parent.width
+        }
 
-            TextField {
-                id: profileCommandField
-                text: activeCommand
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: profileNameField.y+profileNameField.height
-            }
+        TextField {
+            id: profileCommandField
+            text: activeCommand
+            color: "white"
+            width: parent.width
+        }
 
-            ComboBox {
-                id: profileHostField
-                width: parent.width
-                label: "Host"
-                y: profileCommandField.y+profileCommandField.height
-                height: 100
-                //currentIndex: activeHostId
+        ComboBox {
+            id: profileHostField
+            width: parent.width
+            label: "Host"
 
-                menu: ContextMenu {
-                    id: contextMenu
+            menu: ContextMenu {
+                id: contextMenu
 
-                    Repeater {
+                Repeater {
 
                     model: hostModel
 
                     MenuItem { text: name }
 
-                    }
-
-                }
-            }
-
-            Button{
-                id: profileSave
-                text: "Save Profile"
-                y: profileHostField.y+profileHostField.height
-
-                onClicked: {
-
-                    var sshHostId = hostModel.get(profileHostField.currentIndex)
-
-                    profileId=activeProfileId
-                    profileName=profileNameField.text
-                    profileHostId=sshHostId.hostId
-                    profileCommand=profileCommandField.text
-
-                    console.log("ProfileUpdate - activeProfile: " + activeProfile)
-
-                    console.log("ProfileUpdate - activeID: " + profileId + "profileName: " + profileName + "profileHostId: " + profileHostId + "profileCommand: " + profileCommand)
-
-                    dbFunction.updateProfile()
-
-                    var dialog = pageStack.push(savedOK)
-                }
-            }
-
-
-            Dialog {
-
-                id: savedOK
-
-                Text{
-                    width: parent.width
-                    text: "Profile saved Successfully!"
-                    color: "white"
-                    y: 100
-                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
-                onClicked: {
-                    pageStack.clear()
-                    pageStack.push("HomeScreen.qml")
-                }
             }
         }
-        VerticalScrollDecorator {}
+
+        Button{
+            id: profileSave
+            text: "Save Profile"
+
+            onClicked: {
+
+                var sshHostId = hostModel.get(profileHostField.currentIndex)
+
+                profileId=activeProfileId
+                profileName=profileNameField.text
+                profileHostId=sshHostId.hostId
+                profileCommand=profileCommandField.text
+
+                console.log("ProfileUpdate - activeProfile: " + activeProfile)
+
+                console.log("ProfileUpdate - activeID: " + profileId + "profileName: " + profileName + "profileHostId: " + profileHostId + "profileCommand: " + profileCommand)
+
+                dbFunction.updateProfile()
+
+                var dialog = pageStack.push(savedOK)
+            }
+        }
+
+
+        Dialog {
+
+            id: savedOK
+
+            Text{
+                width: parent.width
+                text: "Profile saved Successfully!"
+                color: "white"
+                y: 100
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            onClicked: {
+                pageStack.clear()
+                pageStack.push("HomeScreen.qml")
+            }
+        }
+
     }
 }

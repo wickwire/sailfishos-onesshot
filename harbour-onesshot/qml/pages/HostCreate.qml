@@ -98,76 +98,59 @@ Page {
         }
     }
 
-    SilicaListView {
-        id: listView
-        model: 1
+    Column {
+        width:parent.width
         anchors.fill: parent
-        header: PageHeader {
+        PageHeader {
             title: "Add Host"
         }
-        delegate: BackgroundItem {
-            id: delegate
 
-            TextField {
-                id: hostNameField
-                placeholderText: "Host Name"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-            }
+        TextField {
+            id: hostNameField
+            placeholderText: "Host Name"
+            color: "white"
+            width: parent.width
+        }
 
-            TextField {
-                id: hostAddressField
-                placeholderText: "Address"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: hostNameField.y+hostNameField.height
-            }
+        TextField {
+            id: hostAddressField
+            placeholderText: "Address"
+            color: "white"
+            width: parent.width
+            y: hostNameField.y+hostNameField.height
+        }
 
-            TextField {
-                id: hostPortField
-                placeholderText: "Port"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: hostAddressField.y+hostAddressField.height
-            }
+        TextField {
+            id: hostPortField
+            placeholderText: "Port"
+            color: "white"
+            width: parent.width
+        }
 
-            TextField {
-                id: hostUserField
-                placeholderText: "User"
-                color: delegate.highlighted ? Theme.highlightColor : Theme.primaryColor
-                width: parent.width
-                height: 100
-                y: hostPortField.y+hostPortField.height
-            }
+        TextField {
+            id: hostUserField
+            placeholderText: "User"
+            color: "white"
+            width: parent.width
+        }
 
-            Button{
-                id: hostAdd
-                text: "Add Host"
-                y: hostUserField.y+hostUserField.height
+        Button{
+            id: hostAdd
+            text: "Add Host"
 
-                onClicked: {
+            onClicked: {
 
-                    hostName=hostNameField.text
-                    hostAddress=hostAddressField.text
-                    hostPort=hostPortField.text
-                    hostUser=hostUserField.text
+                hostName=hostNameField.text
+                hostAddress=hostAddressField.text
+                hostPort=hostPortField.text
+                hostUser=hostUserField.text
 
-                    console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
+                console.log("hostName: " + hostName + "hostAddress: " + hostAddress + "hostPort: " + hostPort + "hostUser: " + hostUser)
 
-                    sshGenKey.start()
-
-                    if(sshCmd.checkExistingKeys() === true){
-                        sshGenKey.quit()
-                        console.log("SPINNER OFF AND KEYS ALREADY HERE")
-                        dbFunction.addHost(hostAddress)
-                        pageStack.push(addedOK)
-                    }
-                }
+                sshGenKey.start()
             }
         }
+
     }
 }
 

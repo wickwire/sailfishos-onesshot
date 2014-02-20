@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
     QObject::connect(sshGenKeythread, SIGNAL(started()), sshGenKey, SLOT(genKey()),Qt::QueuedConnection);
     QObject::connect(sshGenKeythread, SIGNAL(started()), sshCmd, SLOT(spinIt()));
     QObject::connect(sshGenKey, SIGNAL(spinnerStateUpdated()), sshCmd, SLOT(stopSpinningIt()));
-
+    QObject::connect(sshGenKey, SIGNAL(finished()), sshCmd, SLOT(stopSpinningIt()));
 
 
     sshDelKey->moveToThread(sshDelKeythread);

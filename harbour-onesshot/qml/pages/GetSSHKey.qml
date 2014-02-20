@@ -62,6 +62,8 @@ Page {
             sshReadKey.quit()
         }
 
+        VerticalScrollDecorator {}
+
     }
 }
 

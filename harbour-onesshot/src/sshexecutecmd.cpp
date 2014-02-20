@@ -63,7 +63,6 @@ void sshExecuteCmd::genKey(){
 
     qDebug() << "data_dir:::: " + data_dir;
 
-    //find/read public key half
     QFile pubKey(data_dir + "/id_rsa.pub");
 
     if (!pubKey.exists()){
@@ -72,17 +71,20 @@ void sshExecuteCmd::genKey(){
            procClean->close();
            proc->startDetached("ssh-keygen -t rsa -b 2048 -f " + data_dir + "/id_rsa");
 
-           sshExecuteCmd * searchKey = new sshExecuteCmd;
 
            QTimer * counter = new QTimer;
 
-           searchKey->checkGeneratedKeys();
+           this->checkGeneratedKeys();
 
-           QObject::connect(counter, SIGNAL(timeout()), searchKey, SLOT(checkGeneratedKeys()));
-           QObject::connect(searchKey, SIGNAL(keysGeneratedUpdated()), counter, SLOT(stop()));
-           QObject::connect(searchKey, SIGNAL(keysGeneratedUpdated()), this, SLOT(stopSpinningIt()));
+           QObject::connect(counter, SIGNAL(timeout()), this, SLOT(checkGeneratedKeys()));
+           QObject::connect(this, SIGNAL(keysGeneratedUpdated()), counter, SLOT(stop()));
+           QObject::connect(this, SIGNAL(keysGeneratedUpdated()), this, SLOT(stopSpinningIt()));
            counter->start(1000);
     }
+    else{
+        this->stopSpinningIt();
+    }
+
 }
 
 void sshExecuteCmd::readKey(){
@@ -242,6 +244,8 @@ bool sshExecuteCmd::checkExistingKeys(){
     QFile pubKey(data_dir + "/id_rsa.pub");
 
     if(pubKey.exists()) {
+        qDebug() << "PUBKEY EXISTS!!!";
+        this->stopSpinningIt();
         return true;
     }
     else{

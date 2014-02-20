@@ -40,118 +40,109 @@ Page {
 
     DBFunctions{ id: dbFunction}
 
-    SilicaListView {
-        id: listView
-        model: 1
+    Column {
+
         anchors.fill: parent
-        header: PageHeader {
+        width: parent.width
+
+        PageHeader {
             title: "Manage Profiles"
         }
-        delegate: BackgroundItem {
-            id: delegate
 
 
-            Component.onCompleted: {
-                dbFunction.profileCount()
-                dbFunction.hostCount()
+        Component.onCompleted: {
+            dbFunction.profileCount()
+            dbFunction.hostCount()
+        }
+
+        Dialog {
+
+            id: emptyHostList
+
+            Text{
+                width: parent.width
+                text: "Host List is empty, please add a Host"
+                color: "white"
+                anchors.horizontalCenter: parent.horizontalCenter
             }
 
-            Dialog {
-
-                id: emptyHostList
-
-                Text{
-                    width: parent.width
-                    text: "Host List is empty, please add a Host"
-                    color: "white"
-                    y: 100
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                onClicked: {
-                    pageStack.clear()
-                    pageStack.push("OptionsPanel.qml")
-                }
-            }
-
-            Dialog {
-
-                id: emptyProfileList
-
-                Text{
-                    width: parent.width
-                    text: "Profiles List is empty, please add a Profile"
-                    color: "white"
-                    y: 100
-                    anchors.horizontalCenter: parent.horizontalCenter
-                }
-
-                onClicked: {
-                    pageStack.clear()
-                    pageStack.push("OptionsPanel.qml")
-                }
-            }
-
-            Button{
-                id: hostCreate
-                text: "Add Host"
-                onClicked: pageStack.push("HostCreate.qml")
-                y: height*1.5*1
-            }
-
-            Button{
-                id: hostDelete
-                text: "Remove Host"
-                onClicked: {
-                    if(countHosts > 0){
-                        pageStack.push("HostDelete.qml")
-                    }
-                    else{
-                        pageStack.push(emptyHostList)
-                        console.log("Empty Host List: " + countHosts)
-                    }
-                }
-                y: height*1.5*2
-            }
-
-            Button{                
-                id: profileCreate
-                text: "Add Profile"
-                onClicked: {
-                    if(countHosts > 0){
-                        pageStack.push("ProfileCreate.qml")
-                    }
-                    else{
-                        pageStack.push(emptyHostList)
-                        console.log("Empty Host List: " + countHosts)
-                    }
-                }
-
-                y: height*1.5*3
-            }
-
-            Button{
-                id: profileDelete
-                text: "Remove Profile"
-                onClicked: {
-                    if(countProfiles > 0){
-                        pageStack.push("ProfileDelete.qml")
-                    }
-                    else{
-                        pageStack.push(emptyProfileList)
-                        console.log("Empty Profile List" + countProfiles)
-                    }
-                }
-                y: height*1.5*4
-            }
-
-            Button{
-                id: dbDrop
-                text: "Clear Database"
-                onClicked: pageStack.push("DropDB.qml")
-                y: height*1.5*5
+            onClicked: {
+                pageStack.clear()
+                pageStack.push("OptionsPanel.qml")
             }
         }
+
+        Dialog {
+
+            id: emptyProfileList
+
+            Text{
+                width: parent.width
+                text: "Profiles List is empty, please add a Profile"
+                color: "white"
+                anchors.horizontalCenter: parent.horizontalCenter
+            }
+
+            onClicked: {
+                pageStack.clear()
+                pageStack.push("OptionsPanel.qml")
+            }
+        }
+
+        Button{
+            id: hostCreate
+            text: "Add Host"
+            onClicked: pageStack.push("HostCreate.qml")
+        }
+
+        Button{
+            id: hostDelete
+            text: "Remove Host"
+            onClicked: {
+                if(countHosts > 0){
+                    pageStack.push("HostDelete.qml")
+                }
+                else{
+                    pageStack.push(emptyHostList)
+                    console.log("Empty Host List: " + countHosts)
+                }
+            }
+        }
+
+        Button{
+            id: profileCreate
+            text: "Add Profile"
+            onClicked: {
+                if(countHosts > 0){
+                    pageStack.push("ProfileCreate.qml")
+                }
+                else{
+                    pageStack.push(emptyHostList)
+                    console.log("Empty Host List: " + countHosts)
+                }
+            }
+        }
+
+        Button{
+            id: profileDelete
+            text: "Remove Profile"
+            onClicked: {
+                if(countProfiles > 0){
+                    pageStack.push("ProfileDelete.qml")
+                }
+                else{
+                    pageStack.push(emptyProfileList)
+                    console.log("Empty Profile List" + countProfiles)
+                }
+            }
+        }
+
+        Button{
+            id: dbDrop
+            text: "Clear Database"
+            onClicked: pageStack.push("DropDB.qml")
+        }
+
     }
 }
 

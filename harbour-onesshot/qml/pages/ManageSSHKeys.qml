@@ -102,32 +102,28 @@ Page {
         }
     }
 
-    SilicaListView {
-        id: listView
-        model: 1
+    Column {
         anchors.fill: parent
-        header: PageHeader {
+        width: parent.width
+
+        PageHeader {
             title: "Manage SSH Keys"
         }
-        delegate: BackgroundItem {
-            id: delegate
 
-            Button{
-                id: getPubKey
-                text: "Show Public Key"
-                onClicked: {
-                    sshReadKey.start()
-                }
-                y: height*1.5*1
-            }
-
-            Button{
-                id: delKeys
-                text: "Delete SSH keys"
-                onClicked: remorse.execute("Are you sure...?")
-                y: height*1.5*2
+        Button{
+            id: getPubKey
+            text: "Show Public Key"
+            onClicked: {
+                sshReadKey.start()
             }
         }
+
+        Button{
+            id: delKeys
+            text: "Delete SSH keys"
+            onClicked: remorse.execute("Are you sure...?")
+        }
+
     }
 }
 

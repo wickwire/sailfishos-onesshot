@@ -31,24 +31,24 @@
 import QtQuick 2.0
 import Sailfish.Silica 1.0
 
-    Dialog {
+Dialog {
 
-        DBFunctions{ id: dbFunction }
+    DBFunctions{ id: dbFunction }
 
-        id: droppedOK
+    id: droppedOK
 
-        Text{
-            width: parent.width
-            text: "DB successfully cleared!"
-            color: "white"
-            y: 100
-            anchors.horizontalCenter: parent.horizontalCenter
-        }
+    Text{
+        width: parent.width
+        text: "DB successfully cleared!"
+        color: "white"
+        y: 100
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
 
-        onClicked: {
-            pageStack.clear()
-            pageStack.push("HomeScreen.qml")
-        }
+    onClicked: {
+        pageStack.clear()
+        pageStack.push("HomeScreen.qml")
+    }
 
-        Component.onCompleted: dbFunction.dropDB()
- }
+    Component.onCompleted: dbFunction.dropDB()
+}
