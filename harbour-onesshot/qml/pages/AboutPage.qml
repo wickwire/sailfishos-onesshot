@@ -49,7 +49,7 @@ Page {
                 width: parent.width
                 wrapMode: Text.WordWrap
                 text: "
-* version 0.5 release 1\n
+* version 0.6 release 1\n
 * oneSSHot works by automating commands over SSH to remote (either LAN or internet accessible) systems.\n
 * To start working with oneSSHot, do as follows:\n
 ** Add a Host. If no Public/Private Key Pairs exist on your device, they will be generated in the .local/share/harbour-onesshot app directory\n
