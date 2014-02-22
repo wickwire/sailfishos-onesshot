@@ -118,4 +118,7 @@ Page {
         }
 
     }
+
+    VerticalScrollDecorator {}
+
 }

@@ -30,7 +30,8 @@ OTHER_FILES += qml/oneSSHot.qml \
     qml/pages/GetSSHKey.qml \
     harbour-onesshot.png \
     qml/pages/OptionsPanel.qml \
-    qml/pages/ManageSSHKeys.qml
+    qml/pages/ManageSSHKeys.qml \
+    qml/pages/HostDeleteCheck.qml
 
 HEADERS += \
     src/sshexecutecmd.h

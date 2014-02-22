@@ -93,29 +93,16 @@ Page {
             anchors.bottom: parent.bottom
 
             onClicked: {
-                dbFunction.deleteHosts()
-                var dialog = pageStack.push(deletedOK)
+                //dbFunction.deleteHosts()
+                //var dialog = pageStack.push(deletedOK)
+
+                var hostsSelected={
+                    "hosts2del" : hostsArray
+                }
+                pageStack.push("HostDeleteCheck.qml",hostsSelected)
             }
         }
 
-
-        Dialog {
-
-            id: deletedOK
-
-            Text{
-                width: parent.width
-                text: "Hosts deleted!"
-                color: "white"
-                y: 100
-                anchors.horizontalCenter: parent.horizontalCenter
-            }
-
-            onClicked: {
-                pageStack.clear()
-                pageStack.push("HomeScreen.qml")
-            }
-        }
-
+        VerticalScrollDecorator {}
     }
 }

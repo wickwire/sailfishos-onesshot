@@ -159,6 +159,32 @@ Item{
 
     }
 
+
+    function listProfiles4host() {
+
+        //if(db !== null) return;
+
+        db = LocalStorage.openDatabaseSync("QQmlOneSSHotDB", "1.0", "QML OneSSHot Profiles DB", 1000000);
+
+        db.transaction(
+                    function(tx) {
+
+                        rs = tx.executeSql('SELECT profileId, profileName FROM oneSSHotProfiles WHERE profileHostId IN ('+ hosts2del +');');
+
+                        for(var i = 0; i < rs.rows.length; i++) {
+                            profiles4HostModel.append({"profileId":rs.rows.item(i).profileId,"name":rs.rows.item(i).profileName})
+                            profilesArray.push(rs.rows.item(i).profileId)
+                            console.log('listProfiles: '+rs.rows.item(i).profileId+'|'+rs.rows.item(i).profileName);
+                        }
+
+                        if(rs.rows.length === 0){
+                            console.log("Profiles4hosts are empty")
+                        }
+                    }
+                    )
+
+    }
+
     function updateProfile() {
 
         //if(db !== null) return;
