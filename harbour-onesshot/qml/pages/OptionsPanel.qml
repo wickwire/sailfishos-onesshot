@@ -64,6 +64,7 @@ Page {
                 text: "Host List is empty, please add a Host"
                 color: "white"
                 anchors.horizontalCenter: parent.horizontalCenter
+                y: 100
             }
 
             onClicked: {
@@ -81,6 +82,7 @@ Page {
                 text: "Profiles List is empty, please add a Profile"
                 color: "white"
                 anchors.horizontalCenter: parent.horizontalCenter
+                y: 100
             }
 
             onClicked: {
