@@ -11,7 +11,8 @@ TARGET = harbour-onesshot
 CONFIG += sailfishapp
 
 SOURCES += src/oneSSHot.cpp \
-    src/sshexecutecmd.cpp
+    src/sshexecutecmd.cpp \
+    src/sqlitedb.cpp
 
 OTHER_FILES += qml/oneSSHot.qml \
     qml/cover/CoverPage.qml \
@@ -34,5 +35,7 @@ OTHER_FILES += qml/oneSSHot.qml \
     qml/pages/HostDeleteCheck.qml
 
 HEADERS += \
-    src/sshexecutecmd.h
+    src/sshexecutecmd.h \
+    src/sqlitedb.h
 
+QT += sql

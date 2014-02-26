@@ -159,7 +159,6 @@ Item{
 
     }
 
-
     function listProfiles4host() {
 
         //if(db !== null) return;
