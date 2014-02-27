@@ -34,6 +34,8 @@
 
 #include <sailfishapp.h>
 #include "sshexecutecmd.h"
+#include "sqlitedb.h"
+
 #include <QScopedPointer>
 #include <QQuickView>
 #include <QQmlEngine>
@@ -71,6 +73,10 @@ int main(int argc, char *argv[])
     QThread* sshReadKeythread = new QThread;
 
     qDebug("Main Thread ID: %d",(int)QGuiApplication::instance()->thread());
+
+    sqliteDB *onesshotDB = new sqliteDB();
+
+    onesshotDB->createDB();
 
 
 
@@ -112,10 +118,6 @@ int main(int argc, char *argv[])
     view->setSource(SailfishApp::pathTo("qml/oneSSHot.qml"));
 
     view->show();
-
-    //sshGenKeyFinished=thread->isFinished();
-
-    //qDebug() << "Thread is finished, should return FALSE: " + sshGenKeyFinished;
 
 
     return app->exec();
