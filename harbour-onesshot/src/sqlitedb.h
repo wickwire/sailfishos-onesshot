@@ -23,7 +23,10 @@ signals:
 
 public slots:
     void createDB();
+    void openDB();
     void dropDB();
+    void createProfilesTbl();
+    void createHostsTbl();
     void hostCount();
     void profileCount();
     void getTheMark();

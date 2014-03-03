@@ -1,5 +1,7 @@
 #include "sqlitedb.h"
 #include <QSqlDatabase>
+#include <QSqlQuery>
+
 #include <QDebug>
 
 #include <QCoreApplication>
@@ -28,13 +30,26 @@ void sqliteDB::createDB(){
     if(!onesshotDB.exists()){
         qDebug() << "No database found, creating: " << path;
         db.setDatabaseName(path);
-        db.open();
+        openDB();
+        createProfilesTbl();
+        createHostsTbl();
         qDebug() << "Close database: " << path;
         db.close();
     }
     else{
         qDebug() << "database already exists: " << path;
-        dropDB();
+        /*dropDB working*/
+        //dropDB();
+
+        /*addHost working*/
+        db.setDatabaseName(path);
+        openDB();
+        addHost();
+
+        /*addProfile working*/
+        db.setDatabaseName(path);
+        openDB();
+        addProfile();
     }
     //emit successful creation
 }
@@ -56,6 +71,136 @@ void sqliteDB::dropDB(){
     //emit successful drop
 }
 
+void sqliteDB::openDB(){
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
+
+    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
+    path.append(QDir::separator()).append("onesshot.db.sqlite");
+    path = QDir::toNativeSeparators(path);
+    db.setDatabaseName(path);
+    db.open();
+    qDebug() << "Database successfully opened";
+}
+
+
+void sqliteDB::createProfilesTbl(){
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS oneSSHotProfiles "
+              "(profileId INTEGER PRIMARY KEY AUTOINCREMENT, "
+              "profileName VARCHAR(30), "
+              "profileHostId INTEGER, "
+              "profileCommand VARCHAR(100))");
+
+    //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles(profileId INTEGER PRIMARY KEY AUTOINCREMENT, profileName TEXT, profileHostId INT, profileCommand TEXT);');
+}
+
+void sqliteDB::createHostsTbl(){
+    QSqlQuery query;
+    query.exec("CREATE TABLE IF NOT EXISTS oneSSHotHosts "
+              "(hostId INTEGER PRIMARY KEY AUTOINCREMENT, "
+              "hostName varchar(20), "
+              "hostAddress varchar(50), "
+              "hostPort integer, "
+              "hostUser varchar(50))");
+
+    //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts(hostId INTEGER PRIMARY KEY AUTOINCREMENT, hostName TEXT, hostAddress TEXT, hostPort INT, hostUser TEXT);');
+}
+
+void sqliteDB::addHost(){
+    //insert data into the DB
+    //emit success
+
+    QString hostName, hostAddress, hostUser;
+    int hostPort;
+
+    hostName="testHost";
+    hostAddress="123.456.789.147";
+    hostPort=6565;
+    hostUser="testUser";
+
+    QSqlQuery query;
+
+    if (db.isOpen())
+        {
+
+        qDebug() << "DB is open, ready to insert > addHosts";
+
+        query.prepare("INSERT INTO oneSSHotHosts (hostName, hostAddress, hostPort, hostUser) "
+                      "VALUES (?, ?, ?, ?)");
+        query.addBindValue(hostName);
+        query.addBindValue(hostAddress);
+        query.addBindValue(hostPort);
+        query.addBindValue(hostUser);
+        query.exec();
+
+
+        db.close();
+    }
+}
+
+void sqliteDB::addProfile(){
+    //insert data into the DB
+    //emit success
+
+    QString profileName, profileCommand;
+    int profileHostId;
+
+    profileName="testProfile";
+    /*single quotes are a problem. Need to escape them - using prepare/addBindValue/exec - works */
+    profileCommand="echo 'SailfishOS: '`date +'%y-%m-%d %H:%M:%S'` > /tmp/onesshot.tmp";
+
+
+    profileHostId=3;
+
+    QSqlQuery query;
+
+    if (db.isOpen())
+        {
+
+        qDebug() << "DB is open, ready to insert > addProfiles";
+
+        query.prepare("INSERT INTO oneSSHotProfiles (profileName, profileHostId, profileCommand) "
+                      "VALUES (?, ?, ?)");
+        query.addBindValue(profileName);
+        query.addBindValue(profileHostId);
+        query.addBindValue(profileCommand);
+        query.exec();
+
+        db.close();
+    }
+}
+
+void sqliteDB::updateProfile(){
+    //get data from the DB
+    //insert data into the DB
+    //emit success
+}
+
+void sqliteDB::deleteHosts(){
+    //delete hosts from the DB
+    //emit success
+}
+
+void sqliteDB::deleteProfiles(){
+    //delete profile list from the DB
+    //emit success
+}
+
+void sqliteDB::listHosts(){
+    //get host list from the DB
+    //emit/return the list
+}
+
+void sqliteDB::listProfiles(){
+    //get profile list from the DB
+    //emit/return the results
+}
+
+void sqliteDB::listProfiles4host(){
+    //get profile list from the DB, for a specific host
+    //emit/return the results
+}
 
 void sqliteDB::hostCount(){
     //select count hosts
@@ -72,71 +217,20 @@ void sqliteDB::getTheMark(){
     //emit/return profile data
 }
 
-void sqliteDB::addHost(){
-    //insert data into the DB
-    //emit success
-}
-
-void sqliteDB::deleteHosts(){
-    //delete hosts from the DB
-    //emit success
-}
-
-void sqliteDB::listHosts(){
-    //get host list from the DB
-    //emit/return the list
-}
-
-void sqliteDB::addProfile(){
-    //insert data into the DB
-    //emit success
-}
-
-void sqliteDB::updateProfile(){
-    //get data from the DB
-    //insert data into the DB
-    //emit success
-}
-
-void sqliteDB::deleteProfiles(){
-    //delete profile list from the DB
-    //emit success
-}
-
-void sqliteDB::listProfiles(){
-    //get profile list from the DB
-    //emit/return the results
-}
-
-void sqliteDB::listProfiles4host(){
-    //get profile list from the DB, for a specific host
-    //emit/return the results
-}
-
-
-
-
-
 bool sqliteDB::getGenDB(){
-
     emit finished();
     return true;
 }
 
 void sqliteDB::setGenDB(bool gendb){
-
     emit finished();
 }
 
 bool sqliteDB::getDelDB(){
-
     emit finished();
     return true;
-
 }
 
 void sqliteDB::setDelDB(bool deldb){
-
     emit finished();
-
 }
