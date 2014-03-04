@@ -58,18 +58,26 @@ void sqliteDB::createDB(){
 
         /*deleteHosts working*/
         QVariantList hostList;
-        hostList.append(45);
-        hostList.append(46);
+        hostList.append(49);
+        hostList.append(52);
+        hostList.append(53);
 
         openDB();
         deleteHosts(hostList);
 
         /*deleteProfiles working*/
         QVariantList profileList;
-        int i;
-        for(i=0;i<45;i++){
-            profileList.append(i);
-        }
+        profileList.append(45);
+        profileList.append(46);
+        profileList.append(47);
+        profileList.append(48);
+        profileList.append(45);
+        profileList.append(50);
+        profileList.append(51);
+        profileList.append(52);
+        profileList.append(53);
+        profileList.append(54);
+        profileList.append(55);
 
         openDB();
         deleteProfiles(profileList);
@@ -218,17 +226,31 @@ void sqliteDB::deleteHosts(QVariantList hostList){
     QSqlQuery query;
     int hostIdx;
 
+    QString totalBindValues;
+
+    for(hostIdx=0;hostIdx<hostList.length();hostIdx++){
+        if(hostIdx==(hostList.length()-1)){
+            totalBindValues+="?";
+        }
+        else{
+            totalBindValues+="?, ";
+        }
+    }
+
     if (db.isOpen())
         {
 
         qDebug() << "DB is open, ready to delete > deleteHosts";
 
+        query.prepare("DELETE FROM oneSSHotHosts WHERE hostId IN ( " + totalBindValues + " )");
+
         for(hostIdx=0;hostIdx<hostList.length();hostIdx++){
 
-                query.prepare("DELETE FROM oneSSHotHosts WHERE hostId = ?");
-                query.addBindValue(hostList[hostIdx]);
-                query.exec();
+            query.addBindValue(hostList[hostIdx]);
+
         }
+
+        query.exec();
 
         closeDB();
         qDebug() << "DB is closed - deleteHosts";
@@ -242,6 +264,17 @@ void sqliteDB::deleteProfiles(QVariantList profileList){
     QSqlQuery query;
     int profileIdx;
 
+    QString totalBindValues;
+
+    for(profileIdx=0;profileIdx<profileList.length();profileIdx++){
+        if(profileIdx==(profileList.length()-1)){
+            totalBindValues+="?";
+        }
+        else{
+            totalBindValues+="?, ";
+        }
+    }
+
     if (db.isOpen())
         {
 
@@ -249,9 +282,14 @@ void sqliteDB::deleteProfiles(QVariantList profileList){
 
         for(profileIdx=0;profileIdx<profileList.length();profileIdx++){
 
-                query.prepare("DELETE FROM oneSSHotProfiles WHERE profileId = ?");
-                query.addBindValue(profileList[profileIdx]);
-                query.exec();
+        query.prepare("DELETE FROM oneSSHotProfiles WHERE profileId IN ( " + totalBindValues + " )");
+
+        for(profileIdx=0;profileIdx<profileList.length();profileIdx++){
+
+            query.addBindValue(profileList[profileIdx]);
+
+        }
+        query.exec();
         }
 
         closeDB();
