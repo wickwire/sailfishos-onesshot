@@ -35,7 +35,7 @@ public slots:
     void deleteHosts();
     void listHosts();
     void addProfile();
-    void updateProfile();
+    void updateProfile(int profileID);
     void deleteProfiles();
     void listProfiles();
     void listProfiles4host();

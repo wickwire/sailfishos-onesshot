@@ -50,6 +50,10 @@ void sqliteDB::createDB(){
         /*addProfile working*/
         openDB();
         addProfile();
+
+        /*updateProfile working*/
+        openDB();
+        updateProfile(10);
     }
     //emit successful creation
 }
@@ -88,8 +92,6 @@ void sqliteDB::createProfilesTbl(){
               "profileName VARCHAR(30), "
               "profileHostId INTEGER, "
               "profileCommand VARCHAR(100))");
-
-    //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotProfiles(profileId INTEGER PRIMARY KEY AUTOINCREMENT, profileName TEXT, profileHostId INT, profileCommand TEXT);');
 }
 
 void sqliteDB::createHostsTbl(){
@@ -100,8 +102,6 @@ void sqliteDB::createHostsTbl(){
               "hostAddress varchar(50), "
               "hostPort integer, "
               "hostUser varchar(50))");
-
-    //tx.executeSql('CREATE TABLE IF NOT EXISTS oneSSHotHosts(hostId INTEGER PRIMARY KEY AUTOINCREMENT, hostName TEXT, hostAddress TEXT, hostPort INT, hostUser TEXT);');
 }
 
 void sqliteDB::addHost(){
@@ -169,10 +169,37 @@ void sqliteDB::addProfile(){
     }
 }
 
-void sqliteDB::updateProfile(){
-    //get data from the DB
-    //insert data into the DB
+void sqliteDB::updateProfile(int profileID){
     //emit success
+
+    QString profileName, profileCommand;
+    int profileHostId;
+
+    profileName="testProfile333";
+    /*single quotes are a problem. Need to escape them - using prepare/addBindValue/exec - works */
+    profileCommand="echo 'SailfishOS: '`date +'%y-%m-%d %H:%M:%S'` > /tmp/onesshot.tmp333";
+
+
+    profileHostId=3;
+
+    QSqlQuery query;
+
+    if (db.isOpen())
+        {
+
+        qDebug() << "DB is open, ready to insert > updateProfiles";
+
+        query.prepare("UPDATE oneSSHotProfiles SET profileName = ?, profileHostId = ?, profileCommand = ? "
+                      "WHERE profileId = ?");
+        query.addBindValue(profileName);
+        query.addBindValue(profileHostId);
+        query.addBindValue(profileCommand);
+        query.addBindValue(profileID);
+        query.exec();
+
+        closeDB();
+        qDebug() << "DB is closed - updateProfile";
+    }
 }
 
 void sqliteDB::deleteHosts(){
@@ -221,6 +248,7 @@ bool sqliteDB::getGenDB(){
 }
 
 void sqliteDB::setGenDB(bool gendb){
+    qDebug() << "gendb: " << gendb;
     emit finished();
 }
 
@@ -230,5 +258,6 @@ bool sqliteDB::getDelDB(){
 }
 
 void sqliteDB::setDelDB(bool deldb){
+    qDebug() << "deldb: " << deldb;
     emit finished();
 }
