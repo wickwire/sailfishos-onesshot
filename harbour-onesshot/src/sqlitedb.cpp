@@ -8,6 +8,7 @@
 #include <QStandardPaths>
 #include <QDir>
 #include <QFile>
+#include <QVariantList>
 
 
 sqliteDB::sqliteDB(QObject *parent) :
@@ -53,7 +54,26 @@ void sqliteDB::createDB(){
 
         /*updateProfile working*/
         openDB();
-        updateProfile(10);
+        updateProfile(11, "testProfile333", "echo 'SailfishOS: '`date +'%y-%m-%d %H:%M:%S'` > /tmp/OUTPUT", 222);
+
+        /*deleteHosts working*/
+        QVariantList hostList;
+        hostList.append(45);
+        hostList.append(46);
+
+        openDB();
+        deleteHosts(hostList);
+
+        /*deleteProfiles working*/
+        QVariantList profileList;
+        int i;
+        for(i=0;i<45;i++){
+            profileList.append(i);
+        }
+
+        openDB();
+        deleteProfiles(profileList);
+
     }
     //emit successful creation
 }
@@ -169,18 +189,8 @@ void sqliteDB::addProfile(){
     }
 }
 
-void sqliteDB::updateProfile(int profileID){
+void sqliteDB::updateProfile(int profileID, QString profileName, QString profileCommand, int profileHostId){
     //emit success
-
-    QString profileName, profileCommand;
-    int profileHostId;
-
-    profileName="testProfile333";
-    /*single quotes are a problem. Need to escape them - using prepare/addBindValue/exec - works */
-    profileCommand="echo 'SailfishOS: '`date +'%y-%m-%d %H:%M:%S'` > /tmp/onesshot.tmp333";
-
-
-    profileHostId=3;
 
     QSqlQuery query;
 
@@ -202,14 +212,51 @@ void sqliteDB::updateProfile(int profileID){
     }
 }
 
-void sqliteDB::deleteHosts(){
-    //delete hosts from the DB
+void sqliteDB::deleteHosts(QVariantList hostList){
     //emit success
+
+    QSqlQuery query;
+    int hostIdx;
+
+    if (db.isOpen())
+        {
+
+        qDebug() << "DB is open, ready to delete > deleteHosts";
+
+        for(hostIdx=0;hostIdx<hostList.length();hostIdx++){
+
+                query.prepare("DELETE FROM oneSSHotHosts WHERE hostId = ?");
+                query.addBindValue(hostList[hostIdx]);
+                query.exec();
+        }
+
+        closeDB();
+        qDebug() << "DB is closed - deleteHosts";
+    }
 }
 
-void sqliteDB::deleteProfiles(){
+void sqliteDB::deleteProfiles(QVariantList profileList){
     //delete profile list from the DB
     //emit success
+
+    QSqlQuery query;
+    int profileIdx;
+
+    if (db.isOpen())
+        {
+
+        qDebug() << "DB is open, ready to delete > deleteProfiles";
+
+        for(profileIdx=0;profileIdx<profileList.length();profileIdx++){
+
+                query.prepare("DELETE FROM oneSSHotProfiles WHERE profileId = ?");
+                query.addBindValue(profileList[profileIdx]);
+                query.exec();
+        }
+
+        closeDB();
+        qDebug() << "DB is closed - deleteProfiles";
+    }
 }
 
 void sqliteDB::listHosts(){

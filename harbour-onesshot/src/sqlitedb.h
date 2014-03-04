@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSqlDatabase>
+#include <QVariantList>
 
 class sqliteDB : public QObject
 {
@@ -32,11 +33,11 @@ public slots:
     void profileCount();
     void getTheMark();
     void addHost();
-    void deleteHosts();
+    void deleteHosts(QVariantList hostList);
     void listHosts();
     void addProfile();
-    void updateProfile(int profileID);
-    void deleteProfiles();
+    void updateProfile(int profileID, QString profileName, QString profileCommand, int profileHostId);
+    void deleteProfiles(QVariantList profileList);
     void listProfiles();
     void listProfiles4host();
 
