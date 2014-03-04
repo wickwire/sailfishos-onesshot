@@ -24,6 +24,7 @@ signals:
 public slots:
     void createDB();
     void openDB();
+    void closeDB();
     void dropDB();
     void createProfilesTbl();
     void createHostsTbl();
@@ -41,7 +42,6 @@ public slots:
 
 private:
     QSqlDatabase db;
-
 };
 
 #endif // SQLITEDB_H

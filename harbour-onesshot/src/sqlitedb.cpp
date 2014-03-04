@@ -41,13 +41,13 @@ void sqliteDB::createDB(){
         /*dropDB working*/
         //dropDB();
 
-        /*addHost working*/
         db.setDatabaseName(path);
+
+        /*addHost working*/
         openDB();
         addHost();
 
         /*addProfile working*/
-        db.setDatabaseName(path);
         openDB();
         addProfile();
     }
@@ -72,17 +72,14 @@ void sqliteDB::dropDB(){
 }
 
 void sqliteDB::openDB(){
-
-    db = QSqlDatabase::addDatabase("QSQLITE");
-
-    QString path = QStandardPaths::writableLocation(QStandardPaths::DataLocation);
-    path.append(QDir::separator()).append("onesshot.db.sqlite");
-    path = QDir::toNativeSeparators(path);
-    db.setDatabaseName(path);
     db.open();
     qDebug() << "Database successfully opened";
 }
 
+void sqliteDB::closeDB(){
+    db.close();
+    qDebug() << "Database successfully closed";
+}
 
 void sqliteDB::createProfilesTbl(){
     QSqlQuery query;
@@ -134,8 +131,8 @@ void sqliteDB::addHost(){
         query.addBindValue(hostUser);
         query.exec();
 
-
-        db.close();
+        closeDB();
+        qDebug() << "DB is closed - addHost";
     }
 }
 
@@ -167,7 +164,8 @@ void sqliteDB::addProfile(){
         query.addBindValue(profileCommand);
         query.exec();
 
-        db.close();
+        closeDB();
+        qDebug() << "DB is closed - addProfile";
     }
 }
 
